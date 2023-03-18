@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "mobile",
+    "name": "Siqpik",
     "slug": "mobile",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -22,6 +22,7 @@
       }
     },
     "android": {
+      "versionCode": 2,
       "adaptiveIcon": {
         "foregroundImage": "./assets/icon.png",
         "backgroundColor": "#ffffff"
@@ -38,9 +39,14 @@
       [
         "react-native-vision-camera",
         {
-          "cameraPermissionText": "$(PRODUCT_NAME) needs access to your Camera.",
+          "cameraPermissionText": "$(PRODUCT_NAME) needs access to your Camera."
         }
       ]
-    ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "9b9189b7-ee13-40b1-a220-4944a5649926"
+      }
+    }
   }
 }
