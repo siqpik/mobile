@@ -7,7 +7,7 @@ import {CameraButtons} from './CameraButtons';
 
 export default props => {
 
-    const [hasPermission, setHasPermission] = useState(false);
+    const [hasPermission, setHasPermission] = useState(false)
     const isFocused = useIsFocused()
     const devices = useCameraDevices()
     const camera = useRef(null)
@@ -18,13 +18,14 @@ export default props => {
 
     const [device, setDevice] = useState(devices.back)
 
+    useEffect(() => setDevice(devices.back), [devices])
+
     useEffect(() => {
         (async () => {
-            const status = await Camera.requestCameraPermission();
-            setHasPermission(status === 'authorized');
-            setDevice(devices.back)
+            const status = await Camera.requestCameraPermission()
+            setHasPermission(status === 'authorized')
         })();
-    }, [devices]);
+    }, []);
 
     const takePhoto = async () => {
         try {
@@ -42,31 +43,33 @@ export default props => {
 
     const flipCamera = () => setDevice(device === devices.back ? devices.front : devices.back)
 
-    const renderCamera = () => device == null
-        ? (
-            <View>
-                <Text style={{color: '#030303'}}>Loading</Text>
-            </View>
-        )
-        : (
-            <View style={{flex: 1}}>
-                {hasPermission && (
-                    <>
-                        <Camera
-                            ref={camera}
-                            style={StyleSheet.absoluteFill}
-                            device={device}
-                            isActive={isFocused}
-                            photo={true}
-                        />
-                        <CameraButtons
-                            takePicture={takePhoto}
-                            flipCamera={flipCamera}
-                        />
-                    </>
-                )}
-            </View>
-        )
+    const renderCamera = () => {
+        return device == null
+            ? (
+                <View>
+                    <Text style={{color: '#030303'}}>Camera device not detected</Text>
+                </View>
+            )
+            : (
+                <View style={{flex: 1}}>
+                    {hasPermission && (
+                        <>
+                            <Camera
+                                ref={camera}
+                                style={StyleSheet.absoluteFill}
+                                device={device}
+                                isActive={isFocused}
+                                photo={true}
+                            />
+                            <CameraButtons
+                                takePicture={takePhoto}
+                                flipCamera={flipCamera}
+                            />
+                        </>
+                    )}
+                </View>
+            )
+    }
 
     return (
         <View style={{flex: 1}}>
