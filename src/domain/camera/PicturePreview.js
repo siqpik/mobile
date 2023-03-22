@@ -8,28 +8,30 @@ import {useNavigation} from '@react-navigation/native';
 import {getJson, uploadMedia} from "../service/ApiService";
 import mime from "mime";
 import CountDown from "./CountDown";
-import {useAppDispatch, useAppSelector} from "../../config/hooks";
+import {useAppDispatch} from "../../config/hooks";
 import {errorSearchingFeed, reset, searchingFeed, successSearchingFeed} from "../home/modules/feedSlice";
 import Post from "../home/model/Post";
-
 
 export default props => {
 
     const dispatch = useAppDispatch()
-
-    const [imageUri] = useState("file:///" + props.route.params.state.image.path.split("file:/").join(""));
+    const imageUri = "file:///" + props.route.params.state.image.path.split("file:/").join("")
     const navigation = useNavigation();
+    const [isPosting, setIsPosting] = useState(false)
 
     function postMedia(imagePath) {
+        setIsPosting(true)
         uploadMedia(getFormData(imagePath)).then(response => {
-            if (response.status !== 201 ) {
+            if (response.status !== 201) {
                 throw new Error(response.status)
             }
             dispatch(reset())
             fetchFeed()
-            navigation.navigate("Siqpik")
+            setIsPosting(false)
         })
             .catch(error => console.log("Something went wrong posting: " + error))
+
+        navigation.navigate("Siqpik")
     }
 
     const fetchFeed = () => {
@@ -72,7 +74,7 @@ export default props => {
                             timeLabels={{m: null, s: null}}
                             showSeparator
                         />
-                        <View style={styles.previewButtonsContainer}>
+                        {!isPosting && <View style={styles.previewButtonsContainer}>
                             <TouchableOpacity style={styles.previewButtons} onPress={() => {
                                 postMedia(imageUri)
                             }}>
@@ -84,7 +86,7 @@ export default props => {
                             }}>
                                 <Text style={styles.buttonText}>Discard</Text>
                             </TouchableOpacity>
-                        </View>
+                        </View>}
                     </View>
                 </ImageBackground>
             </View>
