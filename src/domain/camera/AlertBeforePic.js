@@ -30,7 +30,7 @@ export class AlertBeforePic extends React.Component {
     }
 
     render() {
-        const LIMIT_OF_ATTEMPTS = 999;
+        const LIMIT_OF_ATTEMPTS = 3;
         const {navigate} = this.props.navigation;
         return (
             this.state.attempts >= 0 && this.state.attempts < LIMIT_OF_ATTEMPTS
@@ -57,16 +57,13 @@ export class AlertBeforePic extends React.Component {
                         </View>
 
                         <View style={styles.alertButtons}>
-
                             <TouchableOpacity style={styles.button} onPress={() => navigate('Siqpik')}>
                                 <Text style={styles.buttonText}> Cancel </Text>
                             </TouchableOpacity>
                             <TouchableOpacity style={styles.button} onPress={() => this.addAttempt()}>
                                 <Text style={styles.buttonText}> Accept </Text>
                             </TouchableOpacity>
-
                         </View>
-
                     </View>
                 )
                 : this.state.attempts >= LIMIT_OF_ATTEMPTS
