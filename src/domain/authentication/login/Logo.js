@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {Image, Text, View} from 'react-native';
-import {styles} from './style/styles';
+import {styles} from '../style/styles';
 
 
 export class Logo extends Component {
@@ -9,7 +9,7 @@ export class Logo extends Component {
             <View style={styles.container}>
                 <Image
                     style={{ width: 130, height: 130 }}
-                    source={require('../../../assets/icon.png')}
+                    source={require('../../../../assets/icon.png')}
                 />
                 <Text style={styles.logoText}>Siqpik</Text>
             </View>

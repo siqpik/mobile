@@ -1,9 +1,10 @@
 import React from 'react';
-import {StyleSheet, Text, TextInput, TouchableOpacity, View} from 'react-native';
+import {Text, TextInput, TouchableOpacity, View} from 'react-native';
+import {styles} from "../style/styles";
 
 
 export const SignupForm = props =>
-    <View style={styles.container}>
+    <View style={styles.formContainer}>
         <TextInput style={styles.inputBox}
                    placeholder='Email'
                    placeholderTextColor='#000'
@@ -37,36 +38,3 @@ export const SignupForm = props =>
             </TouchableOpacity>
         }
     </View>
-
-
-const styles = StyleSheet.create({
-    container: {
-        flexGrow: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    inputBox: {
-        width: 250,
-        height: 40,
-        backgroundColor: 'rgba(255, 255, 255, 0.3)',
-        borderRadius: 25,
-        paddingHorizontal: 16,
-        fontSize: 16,
-        marginVertical: 10
-    },
-    buttonText: {
-        fontSize: 16,
-        fontWeight: '500',
-        color: '#ffffff',
-        paddingVertical: 6
-    },
-    button: {
-        width: 200,
-        backgroundColor: '#000',
-        borderRadius: 25,
-        marginVertical: 10,
-        alignItems: 'center',
-        justifyContent: 'center',
-        paddingVertical: 10,
-    }
-});

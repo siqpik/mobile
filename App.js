@@ -1,18 +1,17 @@
-import { StyleSheet } from 'react-native';
-
 import React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
-import { LoginScreen } from './src/domain/login/Login';
+import {NavigationContainer} from '@react-navigation/native';
+import {createStackNavigator} from '@react-navigation/stack';
 import RootNavigator from './src/domain/navigation/RootNavigator';
-import { LoadingApp } from './src/domain/navigation/LoadingApp';
-import SignupScreen from './src/domain/Signin/Signup';
-import { Picture } from "./src/domain/pictureview/Picture";
-import { Profile } from "./src/domain/profile/Profile";
+import {LoadingApp} from './src/domain/navigation/LoadingApp';
+import {Picture} from "./src/domain/pictureview/Picture";
+import {Profile} from "./src/domain/profile/Profile";
 import Preview from "./src/domain/camera/PicturePreview";
 import CommentsPage from './src/domain/home/components/Comments';
 import TakeNewPic from "./src/domain/camera/TakeNewPic";
 import Icon from 'react-native-vector-icons/MaterialIcons'
+import {LoginScreen} from "./src/domain/authentication/login/Login";
+import SignupScreen from "./src/domain/authentication/Signin/Signup";
+import CodeRequest from "./src/domain/authentication/passwordreset/CodeRequest";
 
 Icon.loadFont();
 
@@ -20,9 +19,7 @@ const Stack = createStackNavigator()
 export default function App() {
     return (
         <NavigationContainer>
-            <Stack.Navigator
-                headerLayoutPreset={'center'}
-            >
+            <Stack.Navigator headerLayoutPreset={'center'}>
                 <Stack.Screen
                     name="Loading"
                     component={LoadingApp}
@@ -46,6 +43,13 @@ export default function App() {
                     }}
                 />
                 <Stack.Screen
+                    name="PasswordResetCodeRequest"
+                    component={CodeRequest}
+                    options={{
+                        headerTitle: 'Get Reset Code',
+                    }}
+                />
+                <Stack.Screen
                     name="RootNavigation"
                     component={RootNavigator}
                     options={{
@@ -57,7 +61,7 @@ export default function App() {
                 <Stack.Screen
                     name="TakePic"
                     component={TakeNewPic}
-                    options={{ headerShown: false, tabBarStyle: { display: 'none' } }}
+                    options={{headerShown: false, tabBarStyle: {display: 'none'}}}
                 />
                 <Stack.Screen
                     name="Picture"

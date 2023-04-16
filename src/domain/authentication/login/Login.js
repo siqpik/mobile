@@ -1,11 +1,13 @@
 import React, {Component} from 'react';
-import {BackHandler, StyleSheet, Text, View} from 'react-native';
+import {BackHandler, Text} from 'react-native';
 
 import {Logo} from './Logo';
 import {Form} from './Form';
 import {SignUpButton} from './SignUpButton';
-import {authenticate} from '../service/AuthenticationService';
+import {authenticate} from '../../service/AuthenticationService';
 import {KeyboardAvoidingScrollView} from 'react-native-keyboard-avoiding-scroll-view';
+import {ForgotPasswordButton} from "./ForgotPaswordButton";
+import {styles} from "../style/styles";
 
 export class LoginScreen extends Component {
 
@@ -36,7 +38,7 @@ export class LoginScreen extends Component {
     render() {
         return (
 
-                <KeyboardAvoidingScrollView flex={0} containerStyle={styles1.container}>
+            <KeyboardAvoidingScrollView flex={0} containerStyle={styles.container}>
                 <Logo/>
                 <Form
                     type="Login"
@@ -51,8 +53,9 @@ export class LoginScreen extends Component {
                 {this.state.hasLoginFailed && <Text style={{color: 'red'}}>Invalid Credentials</Text>}
                 {this.state.formUnFilled && <Text style={{color: 'red'}}>Please fill the fields</Text>}
                 {this.state.showSuccessMessage && <Text>Login Successful</Text>}
+                <ForgotPasswordButton/>
                 <SignUpButton navigation={this.props.navigation}/>
-                </KeyboardAvoidingScrollView>
+            </KeyboardAvoidingScrollView>
 
         );
     }
@@ -84,12 +87,3 @@ export class LoginScreen extends Component {
         }
     }
 }
-
-const styles1 = StyleSheet.create({
-    container: {
-        backgroundColor: "#e0e0e0",
-        flexGrow: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-});

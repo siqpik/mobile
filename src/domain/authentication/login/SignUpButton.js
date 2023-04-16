@@ -1,4 +1,4 @@
-import {styles} from "./style/styles";
+import {styles} from "../style/styles";
 import {Text, TouchableOpacity, View} from "react-native";
 import React from "react";
 
