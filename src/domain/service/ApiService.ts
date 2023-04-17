@@ -50,6 +50,10 @@ export const genericPost = (url, body) =>
     genericPostWithNoResponse(url, body)
         .then(response => response.json())
 
+export const genericPatch = (url, body) =>
+    genericFetch(url, 'PATCH', {'Content-Type': 'application/json'},
+        JSON.stringify(body))
+
 export const genericPostWithNoResponse = (url, body) =>
     genericFetch(url, 'POST', {'Content-Type': 'application/json'},
         JSON.stringify(body))

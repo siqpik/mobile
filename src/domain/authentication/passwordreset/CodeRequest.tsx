@@ -30,11 +30,10 @@ export default () => {
     useEffect(() => {
         if (clicked) {
             if (isValidEmail) {
-                genericPostWithNoResponse('/user/credentials/request/', {email: email})
+                genericPostWithNoResponse('/user/credentials/request/', {email})
                     .catch(err => console.log(err))
-                    .then(res => {
-                        console.log(res.status)
-                        navigation.navigate("Login")//TODO navigate to new
+                    .then(_ => {
+                        navigation.navigate("ConfirmResetCode", {email})//TODO navigate to new
                     })
             }
         }

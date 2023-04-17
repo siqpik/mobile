@@ -12,6 +12,8 @@ import Icon from 'react-native-vector-icons/MaterialIcons'
 import {LoginScreen} from "./src/domain/authentication/login/Login";
 import SignupScreen from "./src/domain/authentication/Signin/Signup";
 import CodeRequest from "./src/domain/authentication/passwordreset/CodeRequest";
+import ConfirmResetCode from "./src/domain/authentication/passwordreset/ConfirmResetCode";
+import ResetPassword from "./src/domain/authentication/passwordreset/ResetPassword";
 
 Icon.loadFont();
 
@@ -47,6 +49,20 @@ export default function App() {
                     component={CodeRequest}
                     options={{
                         headerTitle: 'Get Reset Code',
+                    }}
+                />
+                <Stack.Screen
+                    name="ConfirmResetCode"
+                    component={ConfirmResetCode}
+                    options={{
+                        headerTitle: 'Confirm Code',
+                    }}
+                />
+                <Stack.Screen
+                    name="ResetPassword"
+                    component={ResetPassword}
+                    options={{
+                        headerTitle: 'Reset Password',
                     }}
                 />
                 <Stack.Screen

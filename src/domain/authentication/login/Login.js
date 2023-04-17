@@ -40,6 +40,7 @@ export class LoginScreen extends Component {
 
             <KeyboardAvoidingScrollView flex={0} containerStyle={styles.container}>
                 <Logo/>
+                {this.props.route.params && <Text style={styles.signupText}>{this.props.route.params.passResetMessage}</Text>}
                 <Form
                     type="Login"
                     navigation={this.props.navigation}
