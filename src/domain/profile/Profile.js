@@ -37,7 +37,7 @@ export class Profile extends Component {
         getJson('/profile/' + userName)// change to /user/username/profile
             .then(json => new User(json))
             .then(user => this.setState({user}))
-            .catch(error => alert(error))
+            .catch(error => alert(" " + error))
 
     getProfilePosts = userName => getJson(`/post/${userName}/${this.state.postsPage}`)
         .then(json => this.setState(prevState => (
@@ -96,5 +96,5 @@ export class Profile extends Component {
                     )
                 );
             }
-        }).catch(error => alert(error))
+        }).catch(error => alert("Admire request cannot be sent now. Please try again later: " + error))
 }

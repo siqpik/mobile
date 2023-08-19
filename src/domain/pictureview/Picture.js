@@ -31,7 +31,7 @@ const deletePic = (picID) =>
             if (resp.status === 204) {
                 console.log('DELETED', resp.status);
             }
-        }).catch(error => alert(error));
+        }).catch(error => alert("Picture cannot be deleted now. Try again later: " + error));
 
 const changeProfilePic = pidId =>
     post('/profile/changeProfilePic/' + pidId)
