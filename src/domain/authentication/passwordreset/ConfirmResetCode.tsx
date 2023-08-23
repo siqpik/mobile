@@ -42,6 +42,9 @@ export default props => {
                 {<TouchableOpacity style={styles.button} onPress={() => validateResetCode()}>
                     <Text style={styles.buttonText}> Confirm </Text>
                 </TouchableOpacity>}
+
+                <Text> If you do not receive any code, please go back and check the the email address is correct</Text>
+
             </View>
         </KeyboardAvoidingScrollView>
     );
