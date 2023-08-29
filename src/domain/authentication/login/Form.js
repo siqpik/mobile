@@ -5,7 +5,7 @@ import {StyleSheet, Text, TextInput, TouchableOpacity, View} from 'react-native'
 export const Form = props => (
     <View style={styles.container}>
         <TextInput style={styles.inputBox}
-                   placeholder='Username'
+                   placeholder='Username or email'
                    placeholderTextColor='#000'
                    onChangeText={userName => props.readUserName(userName)}
                    value={props.username}
