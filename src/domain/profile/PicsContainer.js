@@ -16,6 +16,7 @@ export const PicsContainer = props =>
                 username={props.username}
                 navigate={props.navigate}
                 actualUser={props.isActualUser}
+                deletePost={props.deletePost}
             />
         )}
     />)

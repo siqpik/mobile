@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import {Image, ScrollView, Text, TouchableOpacity, View} from "react-native"
 import {styles} from "./style/styles"
-import {deleteItem, post} from '../service/ApiService';
+import {post} from '../service/ApiService';
 import PagerView from "react-native-pager-view";
 
 export class Picture extends Component {
@@ -12,26 +12,18 @@ export class Picture extends Component {
     }
 
     render() {
-        const {posts, username, index, actualUser} = this.props.route.params;
+        const {posts, username, index, actualUser, deletePost} = this.props.route.params;
         return (
             <View style={styles.container}>
 
                 <PagerView style={styles.takenPic} initialPage={index} showPageIndicator={false}
                            orientation={'horizontal'}>
-                    {getPics(posts, actualUser, username)}
+                    {getPics(posts, actualUser, username, deletePost)}
                 </PagerView>
             </View>
         )
     }
 }
-
-const deletePic = (picID) =>
-    deleteItem('/picture/' + picID)
-        .then(resp => {
-            if (resp.status === 204) {
-                console.log('DELETED', resp.status);
-            }
-        }).catch(error => alert("Picture cannot be deleted now. Try again later: " + error));
 
 const changeProfilePic = pidId =>
     post('/profile/changeProfilePic/' + pidId)
@@ -41,28 +33,31 @@ const changeProfilePic = pidId =>
             }
         }).catch(error => alert(error));
 
-const getPics = (posts, actualUser, username) => posts.map((pic, index) =>
+const getPics = (posts, actualUser, username, deletePost) => posts.map((pic, index) =>
     <View key={index + 'pictureView'}>
+        <Text style={styles.userTop}>{username}</Text>
+
+        <Image source={{uri: pic.mediaUrl}} style={styles.pic}/>
         {actualUser ?
             <View style={styles.buttonContainer} style={styles.titleContainer}>
-                <Text style={styles.userTop}>{username}</Text>
-                <TouchableOpacity onPress={() => changeProfilePic(pic.id)}
+
+                {/*<TouchableOpacity onPress={() => changeProfilePic(pic.id)}
                                   style={styles.delete_button}>
                     <Text>Make Profile Picture</Text>
-                </TouchableOpacity>
-                <TouchableOpacity onPress={() => deletePic(pic.id)} style={styles.delete_button}>
+                </TouchableOpacity>*/}
+                {/*<TouchableOpacity onPress={deletePost(pic.id)} style={styles.delete_button}>
                     <Text>Delete</Text>
-                </TouchableOpacity>
+                </TouchableOpacity>*/}
             </View> :
             <View></View>
         }
-
-        <Image source={{uri: pic.mediaUrl}} style={styles.pic}/>
         <ScrollView style={styles.commentContainer} alwaysBounceHorizontal={false}>
             <Text style={styles.date}>{pic.date}</Text>
             {/**getComments(pic)*/}
         </ScrollView>
-    </View>)
+
+    </View>
+)
 
 const getComments = (pic) => pic.comments.map((post, index) =>
     <View key={index} style={styles.comments}>

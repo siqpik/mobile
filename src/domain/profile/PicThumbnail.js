@@ -8,7 +8,8 @@ export default props =>
             index: props.index,
             posts: props.posts,
             username: props.username,
-            actualUser: props.actualUser
+            actualUser: props.actualUser,
+            deletePost: props.deletePost
         })}
 
         key={props.index + 'thumbnail'}

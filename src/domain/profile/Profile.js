@@ -46,7 +46,7 @@ export class Profile extends Component {
                 posts: json.postUrls
             }
         )))
-        .then(json => console.log(this.state.user))
+        .then(json => console.log())
 
     render() {
         return (
@@ -73,6 +73,7 @@ export class Profile extends Component {
                                 posts={this.state.posts}
                                 navigate={this.props.navigation.navigate}
                                 username={this.state.user.name}
+                                deletePost={() => this.deletePost}
                             />
 
                         }
@@ -97,4 +98,9 @@ export class Profile extends Component {
                 );
             }
         }).catch(error => alert("Admire request cannot be sent now. Please try again later: " + error))
+
+    deletePost = postId => {
+        console.log("Ronn: " + postId)
+        //alert(JSON.stringify(this.state.posts))
+    }
 }
