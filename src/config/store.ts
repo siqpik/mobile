@@ -1,9 +1,11 @@
 import feedReducer from "../domain/home/modules/feedSlice"
 import {configureStore} from "@reduxjs/toolkit"
+import profileReducer from "../domain/profile/modules/profileSlice";
 
 export const store = configureStore({
     reducer: {
-        feed: feedReducer
+        feed: feedReducer,
+        profile: profileReducer
     },
     middleware: getDefaultMiddleware => getDefaultMiddleware()
 })

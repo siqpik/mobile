@@ -14,7 +14,6 @@ const initialState: FeedSate = {
     request: REQUEST.NONE
 }
 
-
 const feedSlice = createSlice({
     name: "feed",
     initialState,
@@ -79,4 +78,5 @@ export const {
     successUnReactingPost,
     reset
 } = feedSlice.actions
+
 export default feedSlice.reducer
