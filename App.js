@@ -4,7 +4,6 @@ import {createStackNavigator} from '@react-navigation/stack';
 import RootNavigator from './src/domain/navigation/RootNavigator';
 import {LoadingApp} from './src/domain/navigation/LoadingApp';
 import {Picture} from "./src/domain/pictureview/Picture";
-import {Profile} from "./src/domain/profile/Profile";
 import Preview from "./src/domain/camera/PicturePreview";
 import CommentsPage from './src/domain/home/components/Comments';
 import TakeNewPic from "./src/domain/camera/TakeNewPic";
@@ -14,6 +13,7 @@ import SignupScreen from "./src/domain/authentication/Signin/Signup";
 import CodeRequest from "./src/domain/authentication/passwordreset/CodeRequest";
 import ConfirmResetCode from "./src/domain/authentication/passwordreset/ConfirmResetCode";
 import ResetPassword from "./src/domain/authentication/passwordreset/ResetPassword";
+import Profile from "./src/domain/profile/Profile";
 
 Icon.loadFont();
 

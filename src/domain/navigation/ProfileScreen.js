@@ -1,9 +1,9 @@
 import React from 'react';
 import {createDrawerNavigator, DrawerContentScrollView, DrawerItem} from '@react-navigation/drawer';
-import {Profile} from '../profile/Profile';
 import {logout} from '../service/AuthenticationService';
 import {useAppDispatch} from "../../config/hooks";
 import {reset} from "../home/modules/feedSlice";
+import Profile from "../profile/Profile";
 
 const CustomDrawerContent = props => {
     const dispatch = useAppDispatch()

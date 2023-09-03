@@ -1,89 +1,53 @@
-import React, {Component} from 'react';
+import React, {useEffect, useState} from 'react';
 import {FlatList, Text} from 'react-native';
-import User from '../model/User';
-import {PicsContainer} from './PicsContainer';
-import {ProfileHeader} from './ProfileHeader';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import {getJson, post} from '../service/ApiService';
-import {USER_NAME_SESSION_ATTRIBUTE_NAME} from '../service/AuthenticationService';
+import {USER_NAME_SESSION_ATTRIBUTE_NAME} from "../service/AuthenticationService";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import {ProfileHeader} from "./ProfileHeader";
+import {PicsContainer} from "./PicsContainer";
 
-export class Profile extends Component {
+export default props => {
 
-    constructor(props) {
-        super(props)
-        this.state = {
-            user: undefined,
-            userName: props.route.params ? props.route.params.userName : undefined,
-            posts: [],
-            postsPage: 1
-        }
-    }
+    const [user, setUser] = useState(undefined)
+    const [userName, setUserName] = useState(props.route.params ? props.route.params.userName : undefined)
+    const [postsPage, setPostsPage] = useState(1)
+    const [posts, setPosts] = useState([])
 
-    componentDidMount() {
-        if (this.state.userName) {
-            this.getUser(this.state.userName)
-            this.getProfilePosts(this.state.userName)
-        } else {
+    useEffect(() => {
+        if (undefined === userName) {
             AsyncStorage.getItem(USER_NAME_SESSION_ATTRIBUTE_NAME)
-                .then(userName => {
-                    this.setState({userName})
-                    this.getUser(this.state.userName)
-                    this.getProfilePosts(this.state.userName)
+                .then(loggedUserName => {
+                    setUserName(loggedUserName)
                 })
         }
-    }
 
-    getUser = userName =>
-        getJson('/profile/' + userName)// change to /user/username/profile
-            .then(json => new User(json))
-            .then(user => this.setState({user}))
-            .catch(error => alert(" " + error))
+        fillProfile()
+    }, [userName])
 
-    getProfilePosts = userName => getJson(`/post/${userName}/${this.state.postsPage}`)
-        .then(json => this.setState(prevState => (
-            {
-                ...prevState,
-                posts: json.postUrls
-            }
-        )))
-        .then(json => console.log())
+    const fillProfile = () => getJson('/profile/' + userName)//TODO change to /user/username/profile
+        .then(u => {
+            setUser(u)
+        })
+        .then(_ => getProfilePosts())
+        .catch(error => {
+            alert("Error finding " + userName + " profile: " + error)
+        })
 
-    render() {
-        return (
-            this.state.user
-                ? (
-                    <FlatList
-                        ListHeaderComponent={<ProfileHeader
-                            name={this.state.user.name}
-                            profilePicUrl={this.state.user.profilePicUrl}
-                            admirersCount={this.state.user.admirersCount}
-                            admiredCount={this.state.user.admiredCount}
-                            username={this.state.userName}
-                            amIAdmirer={this.state.user.amIAdmirer}
-                            isLoggedUser={this.state.user.isLoggedUser}
-                            hasPendingRequest={this.state.user.hasPendingRequest}
-                            sendAdmireRequest={() => this.sendAdmireRequest(
-                                this.state.user.userName)}
-                            navigation={this.props.navigation}
-                        />}
-                        ListFooterComponent={
-                            (this.state.user.amIAdmirer || this.state.user.isLoggedUser) &&
-                            <PicsContainer
-                                isActualUser={this.state.user.isLoggedUser}
-                                posts={this.state.posts}
-                                navigate={this.props.navigation.navigate}
-                                username={this.state.user.name}
-                                deletePost={() => this.deletePost}
-                            />
+    const getProfilePosts = () => getJson(`/post/${userName}/${postsPage}`)
+        .then(json => json.postUrls)
+        .then(postUrls => {
+            setPosts(
+                postsPage === 1 ? postUrls : [...posts, ...postUrls]
+            )
+        })
+        .then(_ => {
+            setPostsPage(postsPage + 1)
+        })
+        .catch(error => {
+            console.log("Error searching posts: " + error)
+        })
 
-                        }
-                    />
-                )
-                : (<Text>Loading...</Text>)
-        )
-    }
-
-    sendAdmireRequest = userName => post('/admire-request/' + userName)
+    const sendAdmireRequest = userName => post('/admire-request/' + userName)
         .then(resp => {
             if (resp.status === 201) {
                 this.setState(prevState => (
@@ -99,8 +63,41 @@ export class Profile extends Component {
             }
         }).catch(error => alert("Admire request cannot be sent now. Please try again later: " + error))
 
-    deletePost = postId => {
+    const deletePost = postId => {
         console.log("Ronn: " + postId)
         //alert(JSON.stringify(this.state.posts))
     }
+
+    return (
+        user
+            ? (
+                <FlatList
+                    ListHeaderComponent={<ProfileHeader
+                        name={user.name}
+                        profilePicUrl={user.profilePicUrl}
+                        admirersCount={user.admirersCount}
+                        admiredCount={user.admiredCount}
+                        username={userName}
+                        amIAdmirer={user.amIAdmirer}
+                        isLoggedUser={user.isLoggedUser}
+                        hasPendingRequest={user.hasPendingRequest}
+                        sendAdmireRequest={() => sendAdmireRequest(userName)}
+                        navigation={props.navigation}
+
+                    />}
+                    ListFooterComponent={
+                        (user.amIAdmirer || user.isLoggedUser) &&
+                        <PicsContainer
+                            isActualUser={user.isLoggedUser}
+                            posts={posts}
+                            navigate={props.navigation.navigate}
+                            username={user.name}
+                            deletePost={() => deletePost}
+                        />
+
+                    }
+                />
+            )
+            : (<Text>Loading...{userName}</Text>)
+    )
 }
