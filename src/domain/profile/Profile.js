@@ -1,39 +1,42 @@
 import React, {useEffect, useState} from 'react';
 import {FlatList, Text} from 'react-native';
 import {getJson, post} from '../service/ApiService';
-import {USER_NAME_SESSION_ATTRIBUTE_NAME} from "../service/AuthenticationService";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import {ProfileHeader} from "./ProfileHeader";
 import {PicsContainer} from "./PicsContainer";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import {USER_NAME_SESSION_ATTRIBUTE_NAME} from "../service/AuthenticationService";
 
 export default props => {
 
     const [user, setUser] = useState(undefined)
-    const [userName, setUserName] = useState(props.route.params ? props.route.params.userName : undefined)
     const [postsPage, setPostsPage] = useState(1)
     const [posts, setPosts] = useState([])
 
     useEffect(() => {
-        if (undefined === userName) {
+        const navigationUserName = props.route.params ? props.route.params.userName : undefined;
+
+        if (undefined === navigationUserName) {
             AsyncStorage.getItem(USER_NAME_SESSION_ATTRIBUTE_NAME)
                 .then(loggedUserName => {
-                    setUserName(loggedUserName)
+                    fillProfile(loggedUserName)
+                        .then(() => getProfilePosts(loggedUserName))
                 })
+        } else {
+            fillProfile(navigationUserName)
+                .then(() => getProfilePosts(navigationUserName))
         }
+    }, [])
 
-        fillProfile()
-            .then(_ => getProfilePosts())
-    }, [userName])
-
-    const fillProfile = () => getJson('/profile/' + userName)//TODO change to /user/username/profile
+    const fillProfile = userName => getJson('/profile/' + userName)//TODO change to /user/username/profile
         .then(u => {
             setUser(u)
         })
+        .then(() => console.log(user))
         .catch(error => {
-            console.log("Error finding " + userName + " profile: " + error)
+            alert("Error finding " + userName + " profile: " + error)
         })
 
-    const getProfilePosts = () => getJson(`/post/${userName}/${postsPage}`)
+    const getProfilePosts = userName => getJson(`/post/${userName}/${postsPage}`)
         .then(json => json.postUrls)
         .then(postUrls => {
             setPosts(
@@ -71,11 +74,11 @@ export default props => {
                         profilePicUrl={user.profilePicUrl}
                         admirersCount={user.admirersCount}
                         admiredCount={user.admiredCount}
-                        username={userName}
+                        username={user.userName}
                         amIAdmirer={user.amIAdmirer}
                         isLoggedUser={user.isLoggedUser}
                         hasPendingRequest={user.hasPendingRequest}
-                        sendAdmireRequest={() => sendAdmireRequest(userName)}
+                        sendAdmireRequest={() => sendAdmireRequest(user.userName)}
                         navigation={props.navigation}
 
                     />}
@@ -86,12 +89,12 @@ export default props => {
                             posts={posts}
                             navigate={props.navigation.navigate}
                             username={user.name}
-                            deletePost={() => deletePost}
+                            deletePost={() => deletePost()}
                         />
 
                     }
                 />
             )
-            : (<Text>Loading...{userName}</Text>)
+            : (<Text>Loading...</Text>)
     )
 }
