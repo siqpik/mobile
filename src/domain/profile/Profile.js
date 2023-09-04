@@ -22,15 +22,15 @@ export default props => {
         }
 
         fillProfile()
+            .then(_ => getProfilePosts())
     }, [userName])
 
     const fillProfile = () => getJson('/profile/' + userName)//TODO change to /user/username/profile
         .then(u => {
             setUser(u)
         })
-        .then(_ => getProfilePosts())
         .catch(error => {
-            alert("Error finding " + userName + " profile: " + error)
+            console.log("Error finding " + userName + " profile: " + error)
         })
 
     const getProfilePosts = () => getJson(`/post/${userName}/${postsPage}`)
@@ -50,22 +50,16 @@ export default props => {
     const sendAdmireRequest = userName => post('/admire-request/' + userName)
         .then(resp => {
             if (resp.status === 201) {
-                this.setState(prevState => (
-                        {
-                            user: {
-                                ...prevState.user,
-                                hasPendingRequest: true
-                            },
-                            userName: prevState.userName
-                        }
-                    )
-                );
+                setUser({
+                    ...user,
+                    hasPendingRequest: true
+                })
             }
         }).catch(error => alert("Admire request cannot be sent now. Please try again later: " + error))
 
     const deletePost = postId => {
         console.log("Ronn: " + postId)
-        //alert(JSON.stringify(this.state.posts))
+        //alert(JSON.stringify(posts))
     }
 
     return (
