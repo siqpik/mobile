@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {FlatList, Text} from 'react-native';
-import {getJson, post} from '../service/ApiService';
+import {deleteItem, getJson, post} from '../service/ApiService';
 import {ProfileHeader} from "./ProfileHeader";
 import {PicsContainer} from "./PicsContainer";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -31,7 +31,6 @@ export default props => {
         .then(u => {
             setUser(u)
         })
-        .then(() => console.log(user))
         .catch(error => {
             alert("Error finding " + userName + " profile: " + error)
         })
@@ -61,8 +60,13 @@ export default props => {
         }).catch(error => alert("Admire request cannot be sent now. Please try again later: " + error))
 
     const deletePost = postId => {
-        console.log("Ronn: " + postId)
-        //alert(JSON.stringify(posts))
+        deleteItem('/post/' + postId)
+            .then(resp => {
+                if (resp.status === 202) {
+                    const newPosts = posts.filter(post => post.id !== postId)
+                    setPosts(newPosts)
+                }
+            })
     }
 
     return (
@@ -89,7 +93,7 @@ export default props => {
                             posts={posts}
                             navigate={props.navigation.navigate}
                             username={user.name}
-                            deletePost={() => deletePost()}
+                            deletePost={() => deletePost}
                         />
 
                     }
