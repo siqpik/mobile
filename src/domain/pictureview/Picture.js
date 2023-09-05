@@ -45,9 +45,9 @@ const getPics = (posts, actualUser, username, deletePost) => posts.map((pic, ind
                                   style={styles.delete_button}>
                     <Text>Make Profile Picture</Text>
                 </TouchableOpacity>*/}
-                {/*<TouchableOpacity onPress={deletePost(pic.id)} style={styles.delete_button}>
+                {<TouchableOpacity onPress={() => deletePost()(pic.id)} style={styles.delete_button}>
                     <Text>Delete</Text>
-                </TouchableOpacity>*/}
+                </TouchableOpacity>}
             </View> :
             <View></View>
         }
