@@ -15,7 +15,7 @@ export default props => {
                 }
             }).catch(error => alert(error));
 
-    const getPics = (posts, actualUser, username, deletePost) => posts.map((pic, index) =>
+    const getPics = () => posts.map((pic, index) =>
         <View key={index + 'pictureView'}>
             <Text style={styles.userTop}>{username}</Text>
 
@@ -54,10 +54,9 @@ export default props => {
 
     return (
         <View style={styles.container}>
-
             <PagerView style={styles.takenPic} initialPage={index} showPageIndicator={false}
                        orientation={'horizontal'}>
-                {getPics(posts, actualUser, username, deletePost)}
+                {getPics()}
             </PagerView>
         </View>
     )
