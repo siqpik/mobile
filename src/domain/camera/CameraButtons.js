@@ -4,7 +4,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import React from "react";
 import IonIcon from 'react-native-vector-icons/Ionicons';
 
-export const CameraButtons = props => (
+export default props => (
     <View style={styles.buttonsContainer}>
         <TouchableOpacity onPress={() => props.flipCamera()}
                           style={styles.capture}>
