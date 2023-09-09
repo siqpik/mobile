@@ -3,20 +3,19 @@ import {StyleSheet, Text, View} from 'react-native';
 
 import {Camera, useCameraDevices} from 'react-native-vision-camera';
 import {useIsFocused} from "@react-navigation/native"
-import {CameraButtons} from './CameraButtons';
+import CameraButtons from "./CameraButtons";
 
 export default props => {
 
+    const devices = useCameraDevices()
+    const [device, setDevice] = useState(devices.back)
     const [hasPermission, setHasPermission] = useState(false)
     const isFocused = useIsFocused()
-    const devices = useCameraDevices()
     const camera = useRef(null)
     const takePhotoOptions = {
         qualityPrioritization: 'speed',
         flash: 'off'
     };
-
-    const [device, setDevice] = useState(devices.back)
 
     useEffect(() => setDevice(devices.back), [devices])
 
@@ -28,52 +27,41 @@ export default props => {
     }, []);
 
     const takePhoto = async () => {
-        try {
-            //Error Handle better
-            if (camera.current == null) {
-                throw new Error('Camera Ref is Null');
-            }
+        const currentCamera = camera.current;
 
-            return camera.current.takePhoto(takePhotoOptions)
-                .then(media => props.navigation.navigate('Preview', {state: {image: media}}))
-        } catch (error) {
-            console.log(error);
+        if (currentCamera == null) {
+            console.log('Camera Ref is Null');
         }
+
+        return currentCamera.takePhoto(takePhotoOptions)
+            .then(media => props.navigation.navigate('Preview', {state: {image: media}}))
     };
 
     const flipCamera = () => setDevice(device === devices.back ? devices.front : devices.back)
 
-    const renderCamera = () => {
-        return device == null
-            ? (
-                <View>
-                    <Text style={{color: '#030303'}}>Camera device not detected</Text>
-                </View>
-            )
-            : (
-                <View style={{flex: 1}}>
-                    {hasPermission && (
-                        <>
-                            <Camera
-                                ref={camera}
-                                style={StyleSheet.absoluteFill}
-                                device={device}
-                                isActive={isFocused}
-                                photo={true}
-                            />
-                            <CameraButtons
-                                takePicture={takePhoto}
-                                flipCamera={flipCamera}
-                            />
-                        </>
-                    )}
-                </View>
-            )
-    }
-
-    return (
-        <View style={{flex: 1}}>
-            {renderCamera()}
-        </View>
-    );
+    return device
+        ? (
+            <View style={{flex: 1}}>
+                {hasPermission && (
+                    <>
+                        <Camera
+                            ref={camera}
+                            style={StyleSheet.absoluteFill}
+                            device={device}
+                            isActive={isFocused}
+                            photo={true}
+                        />
+                        <CameraButtons
+                            takePicture={takePhoto}
+                            flipCamera={flipCamera}
+                        />
+                    </>
+                )}
+            </View>
+        )
+        : (
+            <View>
+                <Text style={{color: '#030303'}}>Camera device not detected</Text>
+            </View>
+        )
 }
