@@ -7,17 +7,21 @@ import CameraButtons from "./CameraButtons";
 
 export default props => {
 
+    const BACK = 'back'
+    const FRONT = 'front'
+
     const devices = useCameraDevices()
-    const [device, setDevice] = useState(devices.back)
+    const [cameraPosition, setCameraPosition] = useState<typeof FRONT | typeof BACK>(BACK);
+    const [flash, setFlash] = useState<'off' | 'on'>('off');
+    const device = devices[cameraPosition];
+
     const [hasPermission, setHasPermission] = useState(false)
     const isFocused = useIsFocused()
-    const camera = useRef(null)
+    const camera = useRef<Camera>(null)
     const takePhotoOptions = {
         qualityPrioritization: 'speed',
         flash: 'off'
     };
-
-    useEffect(() => setDevice(devices.back), [devices])
 
     useEffect(() => {
         (async () => {
@@ -37,7 +41,7 @@ export default props => {
             .then(media => props.navigation.navigate('Preview', {state: {image: media}}))
     };
 
-    const flipCamera = () => setDevice(device === devices.back ? devices.front : devices.back)
+    const flipCamera = () => setCameraPosition(cameraPosition === BACK ? FRONT : BACK)
 
     return device
         ? (
