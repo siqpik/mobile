@@ -46,7 +46,8 @@ export default props => {
             setPostsPage(postsPage + 1)
         })
         .catch(error => {
-            console.log("Error searching posts: " + error)
+            console.log("Error searching posts: " + error) //TODO if 403 should logout :)
+            console.log(typeof error)
         })
 
     const sendAdmireRequest = userName => post('/admire-request/' + userName)
