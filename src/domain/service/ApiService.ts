@@ -1,8 +1,9 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {TOKEN_SESSION} from "../shared/Consts";
+import {logout} from './AuthenticationService'
 
 //const API_URL = 'http://localhost:8080';
-const API_URL = 'https://siqpik-dev.herokuapp.com';
+const API_URL = 'https://siqpik.up.railway.app';
 
 export const post = (url, body, contentType) => {
     return authenticatedRequest(url,
@@ -74,6 +75,12 @@ const genericFetch = (url, method, headers, body) => {
 function handleErrors(response) {
     if (!response.ok) {
         console.log("Something went wrong fetching: " + JSON.stringify(response))
+        if(403 === response.status){
+            console.log("Unauthorised: Logging out...")
+            logout()
+            return;
+        }
+
         throw Error(response.status);
     }
     return response;
