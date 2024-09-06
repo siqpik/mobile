@@ -97,8 +97,7 @@ export default function App() {
                     name="ProfileOther"
                     component={Profile}
                     options={{
-                        title: 'Siqpik',
-                        headerCenter: () => ('')
+                        title: 'Siqpik'
                     }}
                 />
                 <Stack.Screen
