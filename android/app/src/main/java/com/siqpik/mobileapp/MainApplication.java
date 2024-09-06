@@ -1,4 +1,4 @@
-package com.siqpik.mobile;
+package com.siqpik.mobileapp;
 
 import android.app.Application;
 import android.content.res.Configuration;

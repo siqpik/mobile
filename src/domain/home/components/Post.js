@@ -1,12 +1,12 @@
 import React, {useState} from 'react';
 import {styles} from "../style/styles";
-import {Image, Text, TextInput, TouchableOpacity, View} from "react-native";
+import {Image, Text, TouchableOpacity, View} from "react-native";
 import Icon from 'react-native-vector-icons/AntDesign';
 
 export default props => {
 
     const [picLiked, setPicLiked] = useState();
-    const [comment, setComment] = useState();
+    //const [comment, setComment] = useState();
 
     function goToProfile() {
         if (props.loggedUsername !== props.usernam) {
@@ -26,7 +26,7 @@ export default props => {
 
                     <Image source={{uri: props.profilePicUrl}} style={styles.profilePic}/>
                     <View style={styles.titleName}>
-                        <Text style={styles.name}>{props.username}</Text>
+                        <Text style={styles.name}>{props.displayName}</Text>
                         <Text style={styles.smallerName}>{props.date}</Text>
                     </View>
                 </View>
@@ -80,9 +80,6 @@ export default props => {
                         />
                         :
                         <Icon name="rocket1" size={30} color="white"/>}*/}
-
-
-
                 </View>
             </View>
 

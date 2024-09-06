@@ -18,6 +18,7 @@ export default props => {
         if (undefined === navigationUserName) {
             AsyncStorage.getItem(USER_NAME_SESSION_ATTRIBUTE_NAME)
                 .then(loggedUserName => {
+                    console.log("OPENING PROFILE FOR >>>>>>>>" + loggedUserName);
                     fillProfile(loggedUserName)
                         .then(() => getProfilePosts(loggedUserName))
                 })
@@ -75,7 +76,7 @@ export default props => {
             ? (
                 <FlatList
                     ListHeaderComponent={<ProfileHeader
-                        name={user.name}
+                        displayName={user.displayName}
                         profilePicUrl={user.profilePicUrl}
                         admirersCount={user.admirersCount}
                         admiredCount={user.admiredCount}

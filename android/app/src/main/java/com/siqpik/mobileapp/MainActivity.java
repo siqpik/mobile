@@ -1,4 +1,4 @@
-package com.siqpik.mobile;
+package com.siqpik.mobileapp;
 
 import android.os.Build;
 import android.os.Bundle;

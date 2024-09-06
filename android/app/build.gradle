@@ -113,12 +113,12 @@ android {
 
     compileSdkVersion rootProject.ext.compileSdkVersion
 
-    namespace "com.siqpik.mobile"
+    namespace "com.siqpik.mobileapp"
     defaultConfig {
-        applicationId 'com.siqpik.mobile'
+        applicationId 'com.siqpik.mobileapp'
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 7
+        versionCode 3
         versionName "1.0.0"
     }
 

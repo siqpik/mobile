@@ -157,6 +157,7 @@ export default props => {
                     date={getFormattedDate(post.date)}
                     mediaUrl={post.mediaUrl}
                     username={post.userInfo.username}
+                    displayName={post.userInfo.displayName}
                     profilePicUrl={post.userInfo.profilePicUrl}
                     likePost={togglePostReaction}
                     likesCount={post.likesCount}

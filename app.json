@@ -16,18 +16,18 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.siqpik.mobile",
+      "bundleIdentifier": "com.siqpik.mobileapp",
       "infoPlist": {
         "NSCameraUsageDescription": "$(PRODUCT_NAME) needs access to your Camera."
       }
     },
     "android": {
-      "versionCode": 7,
+      "versionCode": 3,
       "adaptiveIcon": {
         "foregroundImage": "./assets/icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.siqpik.mobile",
+      "package": "com.siqpik.mobileapp",
       "permissions": [
         "android.permission.CAMERA"
       ]

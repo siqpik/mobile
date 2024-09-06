@@ -14,7 +14,7 @@ export const ProfileHeader = props => {
             </TouchableOpacity>}
             <View style={styles.header}>
                 <View>
-                    <Text style={styles.name}>{props.username}</Text>
+                    <Text style={styles.name}>{props.displayName}</Text>
                 </View>
                 <Image
                     key={props.username}
