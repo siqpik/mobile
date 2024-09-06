@@ -20,7 +20,7 @@ export default props => {
     }
 
     return (
-        <View key={1} style={styles.post}>
+        <View key={1}>
 
             <TouchableOpacity onPress={() => goToProfile()}>
                 <View style={styles.userTitle}>
