@@ -5,9 +5,9 @@ import {authenticatedRequest, genericPost} from './ApiService';
 export const USER_NAME_SESSION_ATTRIBUTE_NAME = 'USER_NAME_SESSION_ATTRIBUTE_NAME';
 export const TOKEN_SESSION = 'TOKEN_SESSION_ATTRIBUTE_NAME';
 
-export const authenticate = (username, password) =>
-    genericPost('/login', new AuthenticationRequest(username, password))
-        .then(json => registerSuccessfulLogin(json.jwt, username))
+export const authenticate = (usernameOrEmail, password) =>
+    genericPost('/login', new AuthenticationRequest(usernameOrEmail, password))
+        .then(json => registerSuccessfulLogin(json.jwt, json.username))
 
 export const registerSuccessfulLogin = (token, username) => {
     AsyncStorage.setItem(TOKEN_SESSION, token)

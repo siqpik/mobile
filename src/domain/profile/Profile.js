@@ -18,7 +18,6 @@ export default props => {
         if (undefined === navigationUserName) {
             AsyncStorage.getItem(USER_NAME_SESSION_ATTRIBUTE_NAME)
                 .then(loggedUserName => {
-                    console.log("OPENING PROFILE FOR >>>>>>>>" + loggedUserName);
                     fillProfile(loggedUserName)
                         .then(() => getProfilePosts(loggedUserName))
                 })
