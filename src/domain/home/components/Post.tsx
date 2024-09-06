@@ -5,7 +5,8 @@ import Icon from 'react-native-vector-icons/AntDesign';
 
 export default props => {
 
-    const [picLiked, setPicLiked] = useState();
+    const [picLiked = props.iReacted, setPicLiked]: [boolean, (value: boolean) => void] = useState();
+
     //const [comment, setComment] = useState();
 
     function goToProfile() {
@@ -34,10 +35,11 @@ export default props => {
             <Image source={{uri: props.mediaUrl}} style={styles.wallPic}/>
 
             <View style={styles.comments}>
-                <Text
-                    style={styles.firstComment}> {props.likesCount} like{props.likesCount > 1 ? 's' : ''} </Text>
+                <Text style={styles.firstComment}>
+                    {props.likesCount} like{props.likesCount > 1 ? 's' : ''}
+                </Text>
                 {/*<Text style={styles.firstComment}> {props.commentsCount} comments </Text>*/}
-                {props.iReacted || picLiked ?
+                {picLiked ?
                     <Icon
                         onPress={() => {
                             props.likePost(props.id, true);
