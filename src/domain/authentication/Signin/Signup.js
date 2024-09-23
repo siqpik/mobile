@@ -4,9 +4,8 @@ import {SignupForm} from './SignupForm';
 import {LoginButton} from "./LoginButton";
 import {genericPost} from "../../service/ApiService";
 import {authenticate} from "../../service/AuthenticationService";
-import {Logo} from "../login/Logo";
+import Logo from "../login/Logo";
 import {KeyboardAvoidingScrollView} from 'react-native-keyboard-avoiding-scroll-view';
-
 
 export default class SignupScreen extends Component {
 

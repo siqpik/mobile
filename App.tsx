@@ -8,7 +8,7 @@ import Preview from "./src/domain/camera/PicturePreview";
 import CommentsPage from './src/domain/home/components/Comments';
 import TakeNewPic from "./src/domain/camera/TakeNewPic";
 import Icon from 'react-native-vector-icons/MaterialIcons'
-import {LoginScreen} from "./src/domain/authentication/login/Login";
+import LoginScreen from "./src/domain/authentication/login/LoginScreen";
 import SignupScreen from "./src/domain/authentication/Signin/Signup";
 import CodeRequest from "./src/domain/authentication/passwordreset/CodeRequest";
 import ConfirmResetCode from "./src/domain/authentication/passwordreset/ConfirmResetCode";

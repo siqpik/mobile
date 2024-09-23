@@ -40,7 +40,7 @@ export default props => {
     const dispatch = useAppDispatch()
 
     const [loggedUsername, setLoggedUsername] = useState([]);
-    const [refreshing, setRefreshing] = React.useState(false);
+    const [refreshing, setRefreshing] = useState(false);
 
     const wait = timeout => {
         return new Promise(resolve => {

@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {KeyboardAvoidingScrollView} from "react-native-keyboard-avoiding-scroll-view";
-import {Logo} from "../login/Logo";
+import Logo from "../login/Logo";
 import {Text, TextInput, TouchableOpacity, View} from "react-native";
 import {useNavigation} from "@react-navigation/native";
 import {styles} from "../style/styles";

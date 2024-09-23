@@ -1,0 +1,76 @@
+import React, {Component, useEffect, useState} from 'react';
+import {BackHandler, Text} from 'react-native';
+
+import Logo from './Logo';
+import {Form} from './Form';
+import SignUpButton from './SignUpButton';
+import {authenticate} from '../../service/AuthenticationService';
+import {KeyboardAvoidingScrollView} from 'react-native-keyboard-avoiding-scroll-view';
+import ForgotPasswordButton from "./ForgotPaswordButton";
+import {styles} from "../style/styles";
+
+export default props => {
+
+    const [userName, setUserName] = useState('')
+    const [pass, setPass] = useState('')
+    const [hasLoginFailed, setHasLoginFailed] = useState(false)
+    const [showSuccessMessage, setShowSuccessMessage] = useState(false)
+    const [formUnFilled, setFormUnFilled] = useState(false)
+    const [loginButtonDisabled, setLoginButtonDisabled] = useState(false)
+
+    const backAction = () => {
+        BackHandler.exitApp()
+        return false
+    }
+
+    useEffect(() => {
+        BackHandler.addEventListener("hardwareBackPress", backAction);
+
+        return () => BackHandler.removeEventListener("hardwareBackPress", backAction)
+    }, [backAction])
+
+    const readUserName = (un: React.SetStateAction<string>) => setUserName(un);
+
+    const readPass = (pass: React.SetStateAction<string>) => setPass(pass);
+
+    const loginClicked = () => () => {
+        if (!(userName || pass)) {
+            setFormUnFilled(true)
+        } else {
+            setLoginButtonDisabled(true)
+            setHasLoginFailed(false)
+            authenticate(userName, pass)
+                .then(() => props.navigation.navigate('RootNavigation', {loggedUsername: userName}))
+                .catch(() => {
+                    setShowSuccessMessage(false)
+                    setFormUnFilled(false)
+                    setHasLoginFailed(true)
+                    setLoginButtonDisabled(false)
+                })
+        }
+    }
+
+    return (
+        <KeyboardAvoidingScrollView flex={0} containerStyle={styles.container}>
+            <Logo/>
+            {props.route.params &&
+                <Text style={styles.signupText}>{props.route.params.passResetMessage}</Text>}
+            <Form
+                type="Login"
+                navigation={props.navigation}
+                loginClicked={loginClicked.bind(this)}
+                userName={userName}
+                pass={pass}
+                readUserName={readUserName.bind(this)}
+                readPass={readPass.bind(this)}
+                loginButtonDisabled={loginButtonDisabled}
+            />
+            {hasLoginFailed && <Text style={{color: 'red'}}>Invalid Credentials</Text>}
+            {formUnFilled && <Text style={{color: 'red'}}>Please fill the fields</Text>}
+            {showSuccessMessage && <Text>Login Successful</Text>}
+            <ForgotPasswordButton/>
+            <SignUpButton navigation={props.navigation}/>
+        </KeyboardAvoidingScrollView>
+
+    );
+}
