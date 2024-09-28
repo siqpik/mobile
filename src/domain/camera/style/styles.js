@@ -13,13 +13,13 @@ export const styles = StyleSheet.create({
         alignSelf: 'stretch',
         borderStyle: 'solid'
     },
-    takenPic:{
-       flex: 1
+    takenPic: {
+        flex: 1
     },
-    countdown:{
+    countdown: {
         flex: 1.2,
         flexDirection: 'column',
-        justifyContent:'space-between'
+        justifyContent: 'space-between'
     },
     preview: {
         flex: 1,
@@ -99,7 +99,7 @@ export const styles = StyleSheet.create({
         justifyContent: 'space-around',
         paddingVertical: 15,
     },
-    removeWarning : {
+    removeWarning: {
         height: 30,
         width: '90%',
         justifyContent: 'flex-end',
@@ -118,7 +118,7 @@ export const styles = StyleSheet.create({
         justifyContent: "space-around",
         alignItems: "flex-end",
         width: '100%',
-        paddingBottom:'5%'
+        paddingBottom: '5%'
     },
     previewButtons: {
         width: 100,
