@@ -65,18 +65,6 @@ export default props => {
             })
     }, []);
 
-    /*useFocusEffect(
-        React.useCallback(() => {
-            const onBackPress = () => BackHandler.exitApp()
-
-            BackHandler.addEventListener('hardwareBackPress', onBackPress);
-
-            return () =>
-                BackHandler.removeEventListener('hardwareBackPress', onBackPress);
-        }, [])
-    );*/
-
-
     const togglePostReaction = (postId, toDelete) => {
         if (toDelete) {
             dispatch(unReactingToPost())
@@ -142,7 +130,8 @@ export default props => {
                     username={'Siqpik'}
                     profilePicUrl={'https://res.cloudinary.com/siqpik/image/upload/v1670515879/ibscji05tdziedxvfz7p.jpg'}
                     likesCount={9999}
-                    likePost={() => {}}
+                    likePost={() => {
+                    }}
                     commentsCount={999}
                     comments={[]}
                     iReacted={true}

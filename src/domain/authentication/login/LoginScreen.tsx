@@ -1,5 +1,5 @@
-import React, {useEffect, useState} from 'react';
-import {BackHandler, Text} from 'react-native';
+import React, {useState} from 'react';
+import {Text} from 'react-native';
 
 import Logo from './Logo';
 import {Form} from './Form';
@@ -20,17 +20,6 @@ export default props => {
     const [loginButtonDisabled, setLoginButtonDisabled] = useState(false)
 
     const navigation = useNavigation();
-
-    const backAction = () => {
-        BackHandler.exitApp()
-        return false
-    }
-
-    useEffect(() => {
-        BackHandler.addEventListener("hardwareBackPress", backAction);
-
-        return () => BackHandler.removeEventListener("hardwareBackPress", backAction)
-    }, [backAction])
 
     const readUserName = (un: React.SetStateAction<string>) => setUserName(un);
 
