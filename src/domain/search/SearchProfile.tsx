@@ -1,8 +1,8 @@
 import React, {useState} from 'react'
 import {View} from "react-native"
 import {SearchBar} from 'react-native-elements'
-import ProfileResult from "../../model/ProfileResult"
-import {getJson} from '../../service/ApiService'
+import ProfileResult from "./model/ProfileResult"
+import {getJson} from '../service/ApiService'
 import {useNavigation} from "@react-navigation/native"
 import SearchResults from "./SearchResults"
 

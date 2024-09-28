@@ -74,7 +74,7 @@ const genericFetch = (url, method, headers, body) => {
 function handleErrors(response) {
     if (!response.ok) {
         console.log("Something went wrong fetching: " + JSON.stringify(response))
-        if(403 === response.status){
+        if (403 === response.status) {
             console.log("Unauthorised: Logging out...")
             logout()
             return;

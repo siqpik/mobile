@@ -1,6 +1,6 @@
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import HomeScreen from '../home/HomeScreen';
-import SearchProfile from '../profile/search/SearchProfile';
+import SearchProfile from '../search/SearchProfile';
 import AlertBeforePic from '../camera/AlertBeforePic';
 import NotificationsScreen from '../notifications/NotificationsScreen';
 import ProfileScreen from './ProfileScreen';
