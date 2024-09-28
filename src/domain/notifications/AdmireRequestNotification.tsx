@@ -2,6 +2,7 @@ import React from 'react'
 import {Image, Text, TouchableOpacity, View} from "react-native";
 import {styles} from "./style/styles";
 import {shortenName} from '../shared/utils/functions';
+import {AdmireRequestStatus} from "./model/Notification";
 
 
 export const AdmireRequestNotification = props =>
@@ -14,7 +15,7 @@ export const AdmireRequestNotification = props =>
             <Text style={styles.userName}>{shortenName(props.username)}</Text>
         </TouchableOpacity>
 
-        {props.status === 'PENDING'
+        {props.status === AdmireRequestStatus.PENDING
             ? (
                 <View style={styles.statusContainer}>
                     <View style={styles.userContainer}>

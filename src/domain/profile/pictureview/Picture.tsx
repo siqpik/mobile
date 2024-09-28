@@ -2,18 +2,17 @@ import React from 'react'
 import {Image, ScrollView, Text, TouchableOpacity, View} from "react-native"
 import {styles} from "./style/styles"
 import PagerView from "react-native-pager-view";
-import {post} from "../service/ApiService";
 
 export default props => {
     const {posts, username, index, actualUser, deletePost} = props.route.params;
 
-    const changeProfilePic = pidId =>
+    /*const changeProfilePic = pidId =>
         post('/profile/changeProfilePic/' + pidId)
             .then(resp => {
                 if (resp.status === 200) {
                     console.log(resp.status);
                 }
-            }).catch(error => alert(error));
+            }).catch(error => alert(error));*/
 
     const getPics = () => posts.map((pic, index) =>
         <View key={index + 'pictureView'}>
@@ -45,12 +44,12 @@ export default props => {
         </View>
     )
 
-    const getComments = (pic) => pic.comments.map((post, index) =>
+    /*const getComments = (pic) => pic.comments.map((post, index) =>
         <View key={index} style={styles.comments}>
             <Text style={styles.user}>{post.userName}</Text>
             <Text style={styles.comment}>{post.comments}</Text>
         </View>
-    )
+    )*/
 
     return (
         <View style={styles.container}>

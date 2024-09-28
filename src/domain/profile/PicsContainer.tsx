@@ -2,8 +2,8 @@ import React from 'react';
 import {FlatGrid} from "react-native-super-grid";
 import PicThumbnail from "./PicThumbnail";
 
-export const PicsContainer = props =>
-    (<FlatGrid
+export const PicsContainer = (props: { posts: any[]; username: string; navigate: any; isActualUser: boolean; deletePost: any; }) =>
+    <FlatGrid
         contentContainerStyle={{alignItems: 'center'}}
         data={props.posts}
         itemDimension={170}
@@ -19,4 +19,4 @@ export const PicsContainer = props =>
                 deletePost={props.deletePost}
             />
         )}
-    />)
+    />

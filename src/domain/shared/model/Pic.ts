@@ -1,5 +1,12 @@
 export default class Pic {
-    constructor(pic){
+    id: string
+    url: string
+    likes: number
+    date: any
+    usersTag: string
+    comments: Array<string>
+
+    constructor(pic: Pic) {
         this.id = pic.id
         this.url = pic.url
         this.likes = pic.likes

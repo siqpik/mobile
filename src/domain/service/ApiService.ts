@@ -29,7 +29,7 @@ export const uploadMedia = media =>
         return handleErrors(response)
     })
 
-export const deleteItem = (url, body, contentType) => authenticatedRequest(url,
+export const deleteItem = (url: string, body: undefined, contentType: undefined) => authenticatedRequest(url,
     'DELETE', body, contentType);
 
 export const getJson = url => authenticatedRequest(url, 'GET')
@@ -60,7 +60,6 @@ export const genericPostWithNoResponse = (url, body) =>
         JSON.stringify(body))
 
 const genericFetch = (url, method, headers, body) => {
-
     const fullUrl = API_URL + url
 
     return fetch(fullUrl, {

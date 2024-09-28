@@ -8,6 +8,7 @@ import {authenticate} from '../../service/AuthenticationService';
 import {KeyboardAvoidingScrollView} from 'react-native-keyboard-avoiding-scroll-view';
 import ForgotPasswordButton from "./ForgotPaswordButton";
 import {styles} from "../style/styles";
+import {useNavigation} from "@react-navigation/native";
 
 export default props => {
 
@@ -17,6 +18,8 @@ export default props => {
     const [showSuccessMessage, setShowSuccessMessage] = useState(false)
     const [formUnFilled, setFormUnFilled] = useState(false)
     const [loginButtonDisabled, setLoginButtonDisabled] = useState(false)
+
+    const  navigation = useNavigation();
 
     const backAction = () => {
         BackHandler.exitApp()
@@ -39,8 +42,9 @@ export default props => {
         } else {
             setLoginButtonDisabled(true)
             setHasLoginFailed(false)
+
             authenticate(userName, pass)
-                .then(() => props.navigation.navigate('RootNavigation', {loggedUsername: userName}))
+                .then(() => navigation.navigate('RootNavigation', {loggedUsername: userName}))
                 .catch(() => {
                     setShowSuccessMessage(false)
                     setFormUnFilled(false)
@@ -57,7 +61,6 @@ export default props => {
                 <Text style={styles.signupText}>{props.route.params.passResetMessage}</Text>}
             <Form
                 type="Login"
-                navigation={props.navigation}
                 loginClicked={loginClicked.bind(this)}
                 userName={userName}
                 pass={pass}
@@ -69,7 +72,7 @@ export default props => {
             {formUnFilled && <Text style={{color: 'red'}}>Please fill the fields</Text>}
             {showSuccessMessage && <Text>Login Successful</Text>}
             <ForgotPasswordButton/>
-            <SignUpButton navigation={props.navigation}/>
+            <SignUpButton/>
         </KeyboardAvoidingScrollView>
 
     );
