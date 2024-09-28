@@ -12,7 +12,8 @@ export default () => {
     const [notifications, setNotifications] = useState([]);
 
     useEffect(() => {
-        getAllNotifications().then()
+        getAllNotifications()
+            .then(ns => setNotifications(ns))
     }, []);
 
     useEffect(() => {
@@ -21,36 +22,24 @@ export default () => {
 
     const getAllNotifications = async () => {
         const notifs = await getJson('/notification')
-        notifs.map(n => getAdmireRequests(n))
+        return await Promise.all(
+            notifs.map(async n => await getAdmireRequests(n))
+        ).then(admireRequestsNotifications => admireRequestsNotifications
+            .filter(n => n !== null)
+            .filter(n => n.admireRequestStatus !== AdmireRequestStatus.DISMISSED)
+        )
     }
 
-    const getAdmireRequests = notification => {
-        getJson(`/admire-request/${notification.eventId}`)
-            .then(admireRequest => {
-                    return null !== admireRequest
-                        ? new Notification(notification, admireRequest)
-                        : null
-                }
-            )
-            .then(ar => {
-                if (ar !== null) {
-                    if (ar?.admireRequestStatus !== AdmireRequestStatus.DISMISSED) {
-                        setNotifications(prevNotifications => [...prevNotifications, ar])
-                    }
-                }
-            })
-    }
+    const getAdmireRequests = notification => getJson(`/admire-request/${notification.eventId}`)
+        .then(admireRequest => null !== admireRequest
+            ? new Notification(notification, admireRequest)
+            : null
+        )
 
-    const clearNewNotifications = () => {
-        notifications
-            .filter(notification => NotificationStatus.NEW === notification.notificationStatus)
-            .map(notification => {
-                console.log(JSON.stringify(notification))
-                return notification.id
-            })
-            .forEach(notificationId => patch(`/notification/${notificationId}`, JSON.stringify({status: NotificationStatus.READ}))
-            )
-    }
+    const clearNewNotifications = () => notifications
+        .filter(notification => NotificationStatus.NEW === notification.notificationStatus)
+        .map(notification => notification.id)
+        .forEach(notificationId => patch(`/notification/${notificationId}`, JSON.stringify({status: NotificationStatus.READ})))
 
     const acceptAdmireRequest = (requestId: string) => patch(`/admire-request/${requestId}`)
         .then(_ => {
