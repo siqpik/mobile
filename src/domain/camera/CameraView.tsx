@@ -2,17 +2,17 @@ import React, {useEffect, useRef, useState} from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 
 import {Camera, useCameraDevices} from 'react-native-vision-camera';
-import {useIsFocused} from "@react-navigation/native"
+import {useIsFocused, useNavigation} from "@react-navigation/native"
 import CameraButtons from "./CameraButtons";
 
-export default props => {
+export default () => {
 
+    const navigation = useNavigation();
     const BACK = 'back'
     const FRONT = 'front'
 
     const devices = useCameraDevices()
     const [cameraPosition, setCameraPosition] = useState<typeof FRONT | typeof BACK>(BACK);
-    const [flash, setFlash] = useState<'off' | 'on'>('off');
     const device = devices[cameraPosition];
 
     const [hasPermission, setHasPermission] = useState(false)
@@ -38,7 +38,7 @@ export default props => {
         }
 
         return currentCamera.takePhoto(takePhotoOptions)
-            .then(media => props.navigation.navigate('Preview', {state: {image: media}}))
+            .then(media => navigation.navigate('Preview', {state: {image: media}}))
     };
 
     const flipCamera = () => setCameraPosition(cameraPosition === BACK ? FRONT : BACK)
