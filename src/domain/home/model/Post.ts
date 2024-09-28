@@ -1,4 +1,4 @@
-import PostUserInfo from "../../shared/model/PostUserInfo";
+import PostUserInfo from "./PostUserInfo";
 
 export default class Post {
   id: String

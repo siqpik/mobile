@@ -1,4 +1,4 @@
-import React, {Component, useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {BackHandler, Text} from 'react-native';
 
 import Logo from './Logo';
@@ -19,7 +19,7 @@ export default props => {
     const [formUnFilled, setFormUnFilled] = useState(false)
     const [loginButtonDisabled, setLoginButtonDisabled] = useState(false)
 
-    const  navigation = useNavigation();
+    const navigation = useNavigation();
 
     const backAction = () => {
         BackHandler.exitApp()
