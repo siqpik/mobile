@@ -3,17 +3,17 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import RootNavigator from './src/domain/navigation/RootNavigator';
 import {LoadingApp} from './src/domain/navigation/LoadingApp';
-import Picture from "./src/domain/pictureview/Picture";
+import Picture from "./src/domain/profile/pictureview/Picture";
 import Preview from "./src/domain/camera/PicturePreview";
 import CommentsPage from './src/domain/home/components/Comments';
-import TakeNewPic from "./src/domain/camera/TakeNewPic";
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import LoginScreen from "./src/domain/authentication/login/LoginScreen";
-import SignupScreen from "./src/domain/authentication/Signin/Signup";
+import SignupScreen from "./src/domain/authentication/signup/Signup";
 import CodeRequest from "./src/domain/authentication/passwordreset/CodeRequest";
 import ConfirmResetCode from "./src/domain/authentication/passwordreset/ConfirmResetCode";
 import ResetPassword from "./src/domain/authentication/passwordreset/ResetPassword";
-import Profile from "./src/domain/profile/Profile";
+import Profile from "./src/domain/profile/ProfileScreen";
+import CameraView from "./src/domain/camera/CameraView";
 
 Icon.loadFont();
 
@@ -75,8 +75,8 @@ export default function App() {
                     }}
                 />
                 <Stack.Screen
-                    name="TakePic"
-                    component={TakeNewPic}
+                    name="CameraView"
+                    component={CameraView}
                     options={{headerShown: false, tabBarStyle: {display: 'none'}}}
                 />
                 <Stack.Screen
