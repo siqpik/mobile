@@ -1,22 +1,17 @@
-import React, {Component} from 'react';
+import React, {useEffect} from 'react';
 import {Text} from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {TOKEN_SESSION} from "../service/AuthenticationService";
+import {useNavigation} from "@react-navigation/native";
 
-export class LoadingApp extends Component {
+export default () => {
 
-    constructor(props) {
-        super(props);
-    }
+    const navigation = useNavigation();
 
-    componentDidMount(): void {
+    useEffect(() => {
         AsyncStorage.getItem(TOKEN_SESSION)
-            .then(token => {
-                this.props.navigation.navigate(token ? 'RootNavigation' : 'Login')
-            })
-    }
+            .then(token => navigation.navigate(token ? 'RootNavigation' : 'Login'))
+    }, []);
 
-    render(): React.ReactElement<any, string | React.JSXElementConstructor<any>> | string | number | {} | React.ReactNodeArray | React.ReactPortal | boolean | null | undefined {
-        return <Text>Loading...</Text>;
-    }
+    return <Text>Loading...</Text>;
 }

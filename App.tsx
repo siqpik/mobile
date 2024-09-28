@@ -2,7 +2,7 @@ import React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import RootNavigator from './src/domain/navigation/RootNavigator';
-import {LoadingApp} from './src/domain/navigation/LoadingApp';
+import LoadingApp from './src/domain/navigation/LoadingApp';
 import Picture from "./src/domain/profile/pictureview/Picture";
 import Preview from "./src/domain/camera/PicturePreview";
 import CommentsPage from './src/domain/home/components/Comments';
