@@ -10,12 +10,14 @@ export default props => {
     //const [comment, setComment] = useState();
 
     function goToProfile() {
-        if (props.loggedUsername !== props.usernam) {
+        if (props.loggedUsername !== props.username) {
             props.navigate('ProfileOther', {
                 userName: props.username
             })
         } else {
-            props.navigate('Profile')
+            props.navigate('ProfileScreen', {
+                screenName: 'ProfileScreen',
+            })
         }
     }
 
