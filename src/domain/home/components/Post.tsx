@@ -9,7 +9,7 @@ export default props => {
 
     //const [comment, setComment] = useState();
 
-    function goToProfile() {
+    const goToProfile = () => {
         if (props.loggedUsername !== props.username) {
             props.navigate('ProfileOther', {
                 userName: props.username
