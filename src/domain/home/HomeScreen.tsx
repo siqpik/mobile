@@ -20,27 +20,25 @@ import {
 } from "./modules/feedSlice";
 import {useAppDispatch, useAppSelector} from "../../config/hooks";
 
-
 export default props => {
+
+    const {posts, page} = useAppSelector(store => store.feed)
+    const dispatch = useAppDispatch()
+
+    const [loggedUsername, setLoggedUsername] = useState([]);
+    const [refreshing, setRefreshing] = useState(false);
 
     const fetchFeed = () => {
         dispatch(searchingFeed())
         getJson(`/feed/${page}`)
             .then(json => json.map(post => new Post(post)))
-            .then(newPosts => {
-                dispatch(successSearchingFeed(newPosts))
-            }).catch(error => {
-                console.log("error fetching feed: " + error)
-                dispatch(errorSearchingFeed())
-            }
-        )
+            .then(newPosts => dispatch(successSearchingFeed(newPosts)))
+            .catch(error => {
+                    console.log("error fetching feed: " + error)
+                    dispatch(errorSearchingFeed())
+                }
+            )
     }
-
-    const {posts, request, page} = useAppSelector(store => store.feed)
-    const dispatch = useAppDispatch()
-
-    const [loggedUsername, setLoggedUsername] = useState([]);
-    const [refreshing, setRefreshing] = useState(false);
 
     const wait = timeout => {
         return new Promise(resolve => {
@@ -111,7 +109,6 @@ export default props => {
     };
 
     return (
-
         <KeyboardAvoidingScrollView
             onScroll={({nativeEvent}) => {
                 if (isCloseToBottom(nativeEvent)) {
