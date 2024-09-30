@@ -11,9 +11,11 @@ export default props => {
 
     const goToProfile = () => {
         if (props.loggedUsername !== props.username) {
-            props.navigate('ProfileOther', {
-                userName: props.username
-            })
+            if (props.username !== 'Siqpik'){
+                props.navigate('ProfileOther', {
+                    userName: props.username
+                })
+            }
         } else {
             props.navigate('ProfileScreen', {
                 screenName: 'ProfileScreen',
