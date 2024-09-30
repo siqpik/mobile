@@ -22,20 +22,13 @@ export default props => (
                 color="white"
             />
         </TouchableOpacity>
-        <TouchableOpacity style={styles.capture}>
-            {props.flashMode === 'on' ?
-                <IonIcon
-                    name="md-flash"
-                    color="white"
-                    size={45}
-                />
-                :
-                <IonIcon
-                    name="md-flash-off"
-                    color="white"
-                    size={45}
-                />
-            }
+        <TouchableOpacity onPress={() => props.toggleFlash()}
+                          style={styles.capture}>
+            <IonIcon
+                name={props.flash ? "md-flash" : "md-flash-off"}
+                color="white"
+                size={45}
+            />
         </TouchableOpacity>
 
     </View>

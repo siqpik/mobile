@@ -13,15 +13,12 @@ export default () => {
 
     const devices = useCameraDevices()
     const [cameraPosition, setCameraPosition] = useState<typeof FRONT | typeof BACK>(BACK);
+    const [flash, setFlash] = useState<boolean>(false);
     const device = devices[cameraPosition];
 
     const [hasPermission, setHasPermission] = useState(false)
     const isFocused = useIsFocused()
     const camera = useRef<Camera>(null)
-    const takePhotoOptions = {
-        qualityPrioritization: 'speed',
-        flash: 'off'
-    };
 
     useEffect(() => {
         (async () => {
@@ -37,11 +34,15 @@ export default () => {
             console.log('Camera Ref is Null');
         }
 
-        return currentCamera.takePhoto(takePhotoOptions)
-            .then(media => navigation.navigate('Preview', {state: {image: media}}))
+        const media = await currentCamera.takePhoto({
+            qualityPrioritization: 'speed',
+            flash: flash ? 'on' : 'off'
+        });
+        return navigation.navigate('Preview', {state: {image: media}});
     };
 
     const flipCamera = () => setCameraPosition(cameraPosition === BACK ? FRONT : BACK)
+    const toggleFlash = () => setFlash(!flash)
 
     return device
         ? (
@@ -58,6 +59,8 @@ export default () => {
                         <CameraButtons
                             takePicture={takePhoto}
                             flipCamera={flipCamera}
+                            toggleFlash={toggleFlash}
+                            flash={flash}
                         />
                     </>
                 )}
