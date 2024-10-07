@@ -1,7 +1,7 @@
 import React from 'react'
 import {Image, Text, TouchableOpacity, View} from "react-native";
 import {styles} from "./style/styles";
-import {shortenName} from '../shared/utils/functions';
+import {shortenName} from '../../shared/utils/functions';
 import {AdmireRequestStatus} from "./model/Notification";
 
 

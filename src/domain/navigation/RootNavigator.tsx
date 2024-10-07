@@ -2,7 +2,7 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import HomeScreen from '../home/HomeScreen';
 import SearchProfile from '../search/SearchProfile';
 import AlertBeforePic from '../camera/AlertBeforePic';
-import NotificationsScreen from '../notifications/NotificationsScreen';
+import NotificationsScreen from '../notifications/tab/NotificationsScreen';
 import ProfileScreen from './ProfileScreen';
 import React, {useEffect, useState} from 'react';
 import Icon from 'react-native-vector-icons/AntDesign';

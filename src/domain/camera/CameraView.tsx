@@ -1,7 +1,7 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 
-import {Camera, useCameraDevices} from 'react-native-vision-camera';
+import {Camera, useCameraDevice} from 'react-native-vision-camera';
 import {useIsFocused, useNavigation} from "@react-navigation/native"
 import CameraButtons from "./CameraButtons";
 
@@ -11,10 +11,9 @@ export default () => {
     const BACK = 'back'
     const FRONT = 'front'
 
-    const devices = useCameraDevices()
     const [cameraPosition, setCameraPosition] = useState<typeof FRONT | typeof BACK>(BACK);
     const [flash, setFlash] = useState<boolean>(false);
-    const device = devices[cameraPosition];
+    const device = useCameraDevice(cameraPosition)
 
     const [hasPermission, setHasPermission] = useState(false)
     const isFocused = useIsFocused()
@@ -23,9 +22,9 @@ export default () => {
     useEffect(() => {
         (async () => {
             const status = await Camera.requestCameraPermission()
-            setHasPermission(status === 'authorized')
-        })();
-    }, []);
+            setHasPermission(status === 'granted')
+        })()
+    }, [])
 
     const takePhoto = async () => {
         const currentCamera = camera.current;

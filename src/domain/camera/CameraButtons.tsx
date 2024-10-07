@@ -25,7 +25,7 @@ export default props => (
         <TouchableOpacity onPress={() => props.toggleFlash()}
                           style={styles.capture}>
             <IonIcon
-                name={props.flash ? "md-flash" : "md-flash-off"}
+                name={props.flash ? "flash-outline" : "flash-off-outline"}
                 color="white"
                 size={45}
             />

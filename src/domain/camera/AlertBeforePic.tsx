@@ -29,7 +29,7 @@ export default () => {
             .catch(error => alert('An error has occurred adding an attempt: ' + error))
     }
 
-    const LIMIT_OF_ATTEMPTS = 3;
+    const LIMIT_OF_ATTEMPTS = 3
     return (
         attempts >= 0 && attempts < LIMIT_OF_ATTEMPTS
             ? (

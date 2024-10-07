@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
-import {ScrollView, Text} from 'react-native';
+import {Button, ScrollView, Text, View} from 'react-native';
 import Notification, {AdmireRequestStatus, NotificationStatus, NotificationType} from './model/Notification';
-import {deleteItem, getJson, patch} from '../service/ApiService';
+import {deleteItem, getJson, patch} from '../../service/ApiService';
 import {AdmireRequestNotification} from "./AdmireRequestNotification";
 import {useNavigation} from "@react-navigation/native";
 
@@ -68,7 +68,12 @@ export default () => {
 
     return (
         notifications
-            ? <ScrollView>
+            ? <View>
+            <Button
+                title={'Notify'}
+                onPress={() => alert('Heyyyy!')}
+            />
+                <ScrollView>
                 {notifications
                     .map((notification, index) =>
                         notification.type === NotificationType.REQUEST &&
@@ -85,6 +90,7 @@ export default () => {
                     )
                 }
             </ScrollView>
+            </View>
             :
             <Text>_______________________________Nothing to see here :)
                 _________________________________</Text>
