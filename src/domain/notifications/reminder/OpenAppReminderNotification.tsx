@@ -1,21 +1,32 @@
-import notifee, {AndroidImportance} from '@notifee/react-native'
+import notifee, {RepeatFrequency, TimestampTrigger, TriggerType} from '@notifee/react-native'
 
-export default () => {
+export default async function onCreateTriggerNotification() {
+    const date = new Date();
+    date.setHours(8);
+    date.setMinutes(0);
+    date.setSeconds(0.5)
 
-    const channel = async () => await notifee.createChannel({
-        id: '1',
-        name: "Reminder",
-        sound: 'default',
-        importance: AndroidImportance.HIGH,
-        vibration: true
-    })
+    // Create a time-based trigger
+    const trigger: TimestampTrigger = {
+        type: TriggerType.TIMESTAMP,
+        timestamp: date.getTime(),
+        repeatFrequency: RepeatFrequency.DAILY
+    };
 
-    const displayConfig = async () => await notifee.displayNotification({
-        id: '1',
-        title: 'Reminder Test',
-        body: 'Reminder test notification, hpta',
+    const channelId = await notifee.createChannel({
+        id: 'default',
+        name: 'Default Channel',
+    });
 
-    })
-
-    return {}
+    // Create a trigger notification
+    await notifee.createTriggerNotification(
+        {
+            title: 'Siqpik awaits for you: ',
+            body: 'Come see the real world',
+            android: {
+                channelId
+            },
+        },
+        trigger,
+    );
 }

@@ -19,6 +19,7 @@ import {
     unReactingToPost
 } from "./modules/feedSlice";
 import {useAppDispatch, useAppSelector} from "../../config/hooks";
+import onCreateTriggerNotification from "@/src/domain/notifications/reminder/OpenAppReminderNotification";
 
 export default props => {
 
@@ -56,6 +57,7 @@ export default props => {
     const {navigate} = props.navigation;
 
     useEffect(() => {
+        onCreateTriggerNotification()
         AsyncStorage.getItem(USER_NAME_SESSION_ATTRIBUTE_NAME)
             .then(username => {
                 setLoggedUsername(username)
