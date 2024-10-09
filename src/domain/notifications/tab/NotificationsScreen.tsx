@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Button, ScrollView, Text, View} from 'react-native';
+import {ScrollView, Text} from 'react-native';
 import Notification, {AdmireRequestStatus, NotificationStatus, NotificationType} from './model/Notification';
 import {deleteItem, getJson, patch} from '../../service/ApiService';
 import {AdmireRequestNotification} from "./AdmireRequestNotification";
@@ -37,8 +37,8 @@ export default () => {
         )
 
     const clearNewNotifications = () => notifications
-        .filter(notification => NotificationStatus.NEW === notification.notificationStatus)
-        .map(notification => notification.id)
+        .filter((notification: Notification) => NotificationStatus.NEW === notification.notificationStatus)
+        .map((notification: Notification) => notification.id)
         .forEach(notificationId => patch(`/notification/${notificationId}`, JSON.stringify({status: NotificationStatus.READ})))
 
     const acceptAdmireRequest = (requestId: string) => patch(`/admire-request/${requestId}`)
@@ -58,7 +58,7 @@ export default () => {
 
     const dismissAdmirerRequest = (requestId: string) => deleteItem(`/admire-request/${requestId}`)
         .then(_ => {
-            setNotifications(prevNotifications => prevNotifications.filter(n => n.notifiableId !== requestId))
+            setNotifications(prevNotifications => prevNotifications.filter((n: Notification) => n.notifiableId !== requestId))
         })
 
     const goToProfile = (username: string) => navigation
@@ -68,14 +68,10 @@ export default () => {
 
     return (
         notifications
-            ? <View>
-            <Button
-                title={'Notify'}
-                onPress={() => alert('Heyyyy!')}
-            />
-                <ScrollView>
+            ?
+            <ScrollView>
                 {notifications
-                    .map((notification, index) =>
+                    .map((notification: Notification, index) =>
                         notification.type === NotificationType.REQUEST &&
                         <AdmireRequestNotification
                             key={notification.id + index}
@@ -90,7 +86,6 @@ export default () => {
                     )
                 }
             </ScrollView>
-            </View>
             :
             <Text>_______________________________Nothing to see here :)
                 _________________________________</Text>
