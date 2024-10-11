@@ -1,21 +1,17 @@
-import notifee, {EventType, RepeatFrequency, TimestampTrigger, TriggerType} from '@notifee/react-native'
+import notifee, {
+    AndroidBadgeIconType,
+    AndroidImportance,
+    AndroidVisibility,
+    RepeatFrequency,
+    TimestampTrigger,
+    TriggerType
+} from '@notifee/react-native'
+import NotificationSounds from 'react-native-notification-sounds';
 
-notifee.onBackgroundEvent(async ({ type, detail }) => {
-    const { notification, pressAction } = detail;
-
-    console.log(">>>>>>>> " + JSON.stringify(notification))
-    console.log("<<<<<<<< " + pressAction)
-    console.log(">>>>>>>> " + type)
-
-    if (EventType.PRESS){
-        console.log("Should open the fkin app :(")
-    }
-});
-
-export default async function onCreateTriggerNotification() {
+export default async function createOpenAppReminderNotification() {
     const date = new Date();
-    date.setHours(21);
-    date.setMinutes(44)
+    date.setHours(8);
+    date.setMinutes(0)
     date.setSeconds(1)
 
     // Create a time-based trigger
@@ -25,17 +21,15 @@ export default async function onCreateTriggerNotification() {
         repeatFrequency: RepeatFrequency.DAILY
     };
 
+    const sounds = await NotificationSounds.getNotifications('notification');
+
+    console.log(JSON.stringify(sounds[0]))
+
     const channelId = await notifee.createChannel({
         id: 'open-app-reminder',
         name: 'open-app-reminder',
+        sound: sounds[0].url,
     });
-
-    notifee.setBadgeCount(11).then(() => console.log('Badge count set!'));
-
-    notifee
-        .incrementBadgeCount(3)
-        .then(() => notifee.getBadgeCount())
-        .then(count => console.log('Badge count incremented by 1 to: ', count));
 
     // Create a trigger notification
     await notifee.createTriggerNotification(
@@ -45,6 +39,10 @@ export default async function onCreateTriggerNotification() {
             android: {
                 channelId,
                 smallIcon: 'siqpik_notification_icon',
+                badgeIconType: AndroidBadgeIconType.LARGE,
+                badgeCount: 1,
+                importance: AndroidImportance.HIGH,
+                visibility: AndroidVisibility.PUBLIC,
                 pressAction: {
                     id: 'default'
                 }
