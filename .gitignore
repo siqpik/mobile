@@ -44,7 +44,6 @@ DerivedData
 project.xcworkspace
 
 #OS Builds
-android
 ios
 
 # Android/IntelliJ
