@@ -119,7 +119,7 @@ export default props => {
                     fetchFeed()
                 }
             }}
-            scrollEventThrottle={900}
+            scrollEventThrottle={50}
             refreshControl={
                 <RefreshControl refreshing={refreshing} onRefresh={onRefresh}/>
             }
