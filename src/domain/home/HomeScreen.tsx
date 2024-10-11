@@ -19,14 +19,13 @@ import {
     unReactingToPost
 } from "./modules/feedSlice";
 import {useAppDispatch, useAppSelector} from "../../config/hooks";
-import onCreateTriggerNotification from "@/src/domain/notifications/reminder/OpenAppReminderNotification";
 
 export default props => {
 
     const {posts, page} = useAppSelector(store => store.feed)
     const dispatch = useAppDispatch()
 
-    const [loggedUsername, setLoggedUsername] = useState([]);
+    const [loggedUsername, setLoggedUsername] = useState<string>("");
     const [refreshing, setRefreshing] = useState(false);
 
     const fetchFeed = () => {
@@ -57,11 +56,14 @@ export default props => {
     const {navigate} = props.navigation;
 
     useEffect(() => {
-        onCreateTriggerNotification()
         AsyncStorage.getItem(USER_NAME_SESSION_ATTRIBUTE_NAME)
             .then(username => {
-                setLoggedUsername(username)
-                fetchFeed()
+                if (username !== null) {
+                    setLoggedUsername(username)
+                    fetchFeed()
+                } else {
+                    console.log("ERROR: No username from AsyncStorage")
+                }
             })
     }, []);
 
