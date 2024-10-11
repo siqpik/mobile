@@ -9,6 +9,7 @@ import {KeyboardAvoidingScrollView} from 'react-native-keyboard-avoiding-scroll-
 import ForgotPasswordButton from "./ForgotPaswordButton";
 import {styles} from "../style/styles";
 import {useNavigation} from "@react-navigation/native";
+import createOpenAppReminderNotification from "@/src/domain/notifications/reminder/OpenAppReminderNotification";
 
 export default props => {
 
@@ -31,6 +32,8 @@ export default props => {
         } else {
             setLoginButtonDisabled(true)
             setHasLoginFailed(false)
+
+            createOpenAppReminderNotification().then()
 
             authenticate(userName, pass)
                 .then(() => navigation.navigate('RootNavigation', {loggedUsername: userName}))
