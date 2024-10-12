@@ -18,7 +18,7 @@ export default props => {
         <View key={index + 'pictureView'}>
             <Text style={styles.userTop}>{username}</Text>
 
-            <Image source={{uri: pic.mediaUrl}} style={styles.pic}/>
+            <Image source={{uri: pic.mediaUrl}} style={styles.pic} resizeMethod={'resize'}/>
             {actualUser ?
                 <View style={styles.buttonContainer} style={styles.titleContainer}>
 

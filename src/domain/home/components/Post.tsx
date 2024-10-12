@@ -24,7 +24,7 @@ export default props => {
     }
 
     return (
-        <View key={1}>
+        <View key={props.postKey}>
 
             <TouchableOpacity onPress={() => goToProfile()}>
                 <View style={styles.userTitle}>
@@ -36,7 +36,11 @@ export default props => {
                     </View>
                 </View>
             </TouchableOpacity>
-            <Image source={{uri: props.mediaUrl}} style={styles.wallPic}/>
+            <Image
+                source={{uri: props.mediaUrl}} style={styles.wallPic}
+                onError={(error) => console.log('HUbo un error: ' + error.nativeEvent.error)}
+                resizeMethod={'resize'}
+            />
 
             <View style={styles.comments}>
                 <Text style={styles.firstComment}>
