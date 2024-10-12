@@ -60,10 +60,10 @@ export default () => {
     };
 
     const signup = () => genericPost('/user', {
-        email: email,
-        userName: username,
-        password: pass,
-        displayName: displayName
+        email: email.trim(),
+        userName: username.trim(),
+        password: pass.trim(),
+        displayName: displayName.trim()
     })
         .catch(error => {
             setSignUpButtonEnabled(true)
