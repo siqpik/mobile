@@ -5,7 +5,8 @@ export const store = configureStore({
     reducer: {
         feed: feedReducer,
     },
-    middleware: getDefaultMiddleware => getDefaultMiddleware()
+    middleware: (getDefaultMiddleware) =>
+        getDefaultMiddleware({serializableCheck: false})
 })
 
 export type AppDispatch = typeof store.dispatch
