@@ -65,7 +65,6 @@ const feedSlice = createSlice({
     }
 })
 
-
 export const {
     searchingFeed,
     successSearchingFeed,
