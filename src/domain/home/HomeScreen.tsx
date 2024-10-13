@@ -7,6 +7,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import {USER_NAME_SESSION_ATTRIBUTE_NAME} from "../service/AuthenticationService";
 import {
     errorLikingPost,
+    errorSearchingFeed,
     errorUnReactingPost,
     likingPost,
     reset,
@@ -37,7 +38,7 @@ export default props => {
     const getFeed = () => fetchFeed(
         page, () => dispatch(searchingFeed()),
         (payload) => dispatch(successSearchingFeed(payload)),
-        () => dispatch(successUnReactingPost)
+        () => dispatch(errorSearchingFeed())
     )
 
     const onRefresh = React.useCallback(() => {
