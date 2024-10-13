@@ -1,14 +1,12 @@
 import React, {useEffect, useState} from 'react';
 import {RefreshControl} from 'react-native';
 import WallPost from './components/Post';
-import Post from './model/Post';
-import {deleteItem, getJson, post} from '../service/ApiService';
+import {deleteItem, post} from '../service/ApiService';
 import {KeyboardAvoidingScrollView} from 'react-native-keyboard-avoiding-scroll-view';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {USER_NAME_SESSION_ATTRIBUTE_NAME} from "../service/AuthenticationService";
 import {
     errorLikingPost,
-    errorSearchingFeed,
     errorUnReactingPost,
     likingPost,
     reset,
@@ -19,6 +17,7 @@ import {
     unReactingToPost
 } from "./modules/feedSlice";
 import {useAppDispatch, useAppSelector} from "../../config/hooks";
+import {fetchFeed} from "@/src/domain/home/modules/feedService";
 
 export default props => {
 
@@ -28,24 +27,18 @@ export default props => {
     const [loggedUsername, setLoggedUsername] = useState<string>("");
     const [refreshing, setRefreshing] = useState(false);
 
-    const fetchFeed = () => {
-        dispatch(searchingFeed())
-        getJson(`/feed/${page}`)
-            .then(json => json.map(post => new Post(post)))
-            .then(newPosts => dispatch(successSearchingFeed(newPosts)))
-            .catch(error => {
-                    console.log("error fetching feed: " + error)
-                    dispatch(errorSearchingFeed())
-                }
-            )
-    }
-
     const wait = timeout => {
         return new Promise(resolve => {
-            fetchFeed()
+            getFeed()
             setTimeout(resolve, timeout);
         });
     }
+
+    const getFeed = () => fetchFeed(
+        page, () => dispatch(searchingFeed()),
+        (payload) => dispatch(successSearchingFeed(payload)),
+        () => dispatch(successUnReactingPost)
+    )
 
     const onRefresh = React.useCallback(() => {
         dispatch(reset())
@@ -60,7 +53,7 @@ export default props => {
             .then(username => {
                 if (username !== null) {
                     setLoggedUsername(username)
-                    fetchFeed()
+                    getFeed()
                 } else {
                     console.log("ERROR: No username from AsyncStorage")
                 }
@@ -91,9 +84,9 @@ export default props => {
         }
     }
 
-    const commentPost = (pictureID, comment) =>
+    /*const commentPost = (pictureID, comment) =>
         post('/comment/' + pictureID, comment, 'text/plain')
-            .catch(error => alert(error))
+            .catch(error => alert(error))*/
 
     const getFormattedDate = date => {
         const monthNames = ["January", "February", "March", "April", "May", "June",
@@ -116,7 +109,7 @@ export default props => {
         <KeyboardAvoidingScrollView
             onScroll={({nativeEvent}) => {
                 if (isCloseToBottom(nativeEvent)) {
-                    fetchFeed()
+                    getFeed()
                 }
             }}
             scrollEventThrottle={50}
@@ -131,9 +124,10 @@ export default props => {
                     username={'Siqpik'}
                     profilePicUrl={'https://res.cloudinary.com/siqpik/image/upload/v1670515879/ibscji05tdziedxvfz7p.jpg'}
                     likesCount={9999}
-                    likePost={() => {}}
+                    likePost={() => {
+                    }}
                     postKey={':postView'}
-                    commentsCount={999}
+                    //commentsCount={999}
                     comments={[]}
                     iReacted={true}
                     loggedUsername={loggedUsername}
@@ -143,7 +137,8 @@ export default props => {
                 <WallPost
                     navigate={navigate}
                     id={post.id}
-                    key={index + ':postView'}
+                    key={index + ':postViewK'}
+                    postKey={index + ':postView'}
                     date={getFormattedDate(post.date)}
                     mediaUrl={post.mediaUrl}
                     username={post.userInfo.username}
@@ -151,9 +146,9 @@ export default props => {
                     profilePicUrl={post.userInfo.profilePicUrl}
                     likePost={togglePostReaction}
                     likesCount={post.likesCount}
-                    commentPost={commentPost}
-                    commentsCount={post.commentsCount}
-                    comments={post.comments}
+                    //commentPost={commentPost}
+                    //commentsCount={post.commentsCount}
+                    //comments={post.comments}
                     iReacted={post.iReacted}
                     loggedUsername={loggedUsername}
                 />
