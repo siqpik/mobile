@@ -56,9 +56,13 @@ export default props => {
     return (
         <View style={styles.preview}>
             <View style={styles.container}>
-                <ImageBackground source={{uri: `file://${props.route.params.state.image.path}`}}
+                <ImageBackground source={{
+                    uri: isPosting //TODO: PUT A FKNG Gif
+                        ? 'https://yt3.googleusercontent.com/I0EJdMK29arMwh0_ef9lHPYOID3izmqBKCAxDWX3I-3IrRsTc-kKQ1xymRIa1O2IxW6Zjo7kuQ=s900-c-k-c0x00ffffff-no-rj'
+                        : `file://${props.route.params.state.image.path}`
+                }}
                                  style={styles.takenPic}>
-                    <View style={styles.countdown}>
+                    {!isPosting && <View style={styles.countdown}>
                         <CountDown
                             until={60 * 3}
                             size={40}
@@ -70,7 +74,7 @@ export default props => {
                             timeLabels={{m: null, s: null}}
                             showSeparator
                         />
-                        {!isPosting && <View style={styles.previewButtonsContainer}>
+                        <View style={styles.previewButtonsContainer}>
                             <TouchableOpacity style={styles.previewButtons} onPress={() => {
                                 postMedia(imageUri)
                             }}>
@@ -82,8 +86,8 @@ export default props => {
                             }}>
                                 <Text style={styles.buttonText}>Discard</Text>
                             </TouchableOpacity>
-                        </View>}
-                    </View>
+                        </View>
+                    </View>}
                 </ImageBackground>
             </View>
         </View>
