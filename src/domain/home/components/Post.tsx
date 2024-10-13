@@ -38,7 +38,8 @@ export default props => {
             </TouchableOpacity>
             <Image
                 source={{uri: props.mediaUrl}} style={styles.wallPic}
-                onError={(error) => console.log('Hubo un error: ' + error.nativeEvent.error)}
+                onError={(error) => console.log('There was an error: ' + error.nativeEvent.error)}
+                resizeMethod={'resize'}
             />
 
             <View style={styles.comments}>
