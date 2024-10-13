@@ -1,51 +1,46 @@
 import {ImageBackground, Text, TouchableOpacity, View} from 'react-native';
 import React, {useState} from 'react';
-
 import {styles} from "./style/styles";
 import {useNavigation} from '@react-navigation/native';
-
-// Post Media
-import {getJson, uploadMedia} from "../service/ApiService";
+import {uploadMedia} from "../service/ApiService";
 import mime from "mime";
 import CountDown from "./CountDown";
 import {useAppDispatch} from "../../config/hooks";
 import {errorSearchingFeed, reset, searchingFeed, successSearchingFeed} from "../home/modules/feedSlice";
-import Post from "../home/model/Post";
+import {fetchFeed} from "@/src/domain/home/modules/feedService";
 
 export default props => {
 
     const dispatch = useAppDispatch()
-    const imageUri = "file:///" + props.route.params.state.image.path.split("file:/").join("")
     const navigation = useNavigation();
+
+    const imageUri = "file:///" + props.route.params.state.image.path.split("file:/").join("")
     const [isPosting, setIsPosting] = useState(false)
 
-    function postMedia(imagePath) {
+    function postMedia(imagePath: string) {
         setIsPosting(true)
-        uploadMedia(getFormData(imagePath)).then(response => {
-            if (response.status !== 201) {
-                throw new Error(response.status)
-            }
-            dispatch(reset())
-            fetchFeed()
-            setIsPosting(false)
-        })
+
+        uploadMedia(getFormData(imagePath))
+            .then(response => {
+                if (response.status !== 201) {
+                    throw new Error(response.status)
+                }
+
+                dispatch(reset())
+                getFeed()
+
+                setIsPosting(false)
+            })
             .catch(error => console.log("Something went wrong posting: " + error))
-
-        navigation.navigate("Siqpik")
+            .then(() => navigation.navigate("Siqpik"))
     }
 
-    const fetchFeed = () => {
-        dispatch(searchingFeed())
-        getJson(`/feed/1`)
-            .then(json => json.map(post => new Post(post)))
-            .then(newPosts => {
-                dispatch(successSearchingFeed(newPosts))
-            }).catch(error => {
-                console.log("error fetching feed: " + error)
-                dispatch(errorSearchingFeed())
-            }
-        )
-    }
+    const getFeed = () => fetchFeed(
+        1,
+        () => dispatch(searchingFeed()),
+        payload => dispatch(successSearchingFeed(payload)),
+        () => dispatch(errorSearchingFeed())
+    )
 
     function getFormData() {
         const fd = new FormData();
@@ -54,6 +49,7 @@ export default props => {
             type: mime.getType(imageUri),
             name: imageUri.split("/").pop()
         });
+
         return fd;
     }
 
