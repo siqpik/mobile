@@ -3,7 +3,20 @@ import {styles} from "../style/styles";
 import {Image, Text, TouchableOpacity, View} from "react-native";
 import Icon from 'react-native-vector-icons/AntDesign';
 
-export default (props: { iReacted: boolean; loggedUsername: any; username: string; navigate: (arg0: string, arg1: { userName?: any; screenName?: string; }) => void; postKey: React.Key | null | undefined; profilePicUrl: any; displayName: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | null | undefined; date: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | null | undefined; mediaUrl: any; likesCount: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | null | undefined; likePost: (arg0: any, arg1: boolean) => void; id: any; }) => {
+export default (props: {
+    iReacted: boolean;
+    loggedUsername: any;
+    username: string;
+    navigate: (arg0: string, arg1: { userName?: any; screenName?: string; }) => void;
+    postKey: React.Key | null | undefined;
+    profilePicUrl: any;
+    displayName: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | null | undefined;
+    date: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | null | undefined;
+    mediaUrl: any;
+    likesCount: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | null | undefined;
+    likePost: (arg0: any, arg1: boolean) => void;
+    id: any;
+}) => {
 
     const [picLiked = props.iReacted, setPicLiked]: [boolean, (value: boolean) => void] = useState();
 
@@ -11,7 +24,7 @@ export default (props: { iReacted: boolean; loggedUsername: any; username: strin
 
     const goToProfile = () => {
         if (props.loggedUsername !== props.username) {
-            if (props.username !== 'Siqpik'){
+            if (props.username !== 'Siqpik') {
                 props.navigate('ProfileOther', {
                     userName: props.username
                 })
@@ -69,6 +82,8 @@ export default (props: { iReacted: boolean; loggedUsername: any; username: strin
                     />
                 }
             </View>
+
+            <View style={{ height: 21}} />
         </View>
     )
 }
