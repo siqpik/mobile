@@ -57,8 +57,8 @@ export default props => {
         <View style={styles.preview}>
             <View style={styles.container}>
                 <ImageBackground source={{
-                    uri: isPosting //TODO: PUT A FKNG Gif
-                        ? 'https://yt3.googleusercontent.com/I0EJdMK29arMwh0_ef9lHPYOID3izmqBKCAxDWX3I-3IrRsTc-kKQ1xymRIa1O2IxW6Zjo7kuQ=s900-c-k-c0x00ffffff-no-rj'
+                    uri: isPosting
+                        ? 'https://www.stripersonline.com/surftalk/uploads/monthly_2021_02/loading.gif.89b2096f8e6af0dc8cac58c5683938dd.gif'
                         : `file://${props.route.params.state.image.path}`
                 }}
                                  style={styles.takenPic}>
