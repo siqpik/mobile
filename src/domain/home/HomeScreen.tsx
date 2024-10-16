@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {RefreshControl} from 'react-native';
 import WallPost from './components/Post';
-import {deleteItem, post} from '../service/ApiService';
 import {KeyboardAvoidingScrollView} from 'react-native-keyboard-avoiding-scroll-view';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {USER_NAME_SESSION_ATTRIBUTE_NAME} from "../service/AuthenticationService";
@@ -19,6 +18,7 @@ import {
 } from "./modules/feedSlice";
 import {useAppDispatch, useAppSelector} from "../../config/hooks";
 import {fetchFeed} from "@/src/domain/home/modules/feedService";
+import {getFormattedDate, togglePostReaction} from "@/src/domain/shared/utils/functions";
 
 export default props => {
 
@@ -61,43 +61,9 @@ export default props => {
             })
     }, []);
 
-    const togglePostReaction = (postId, toDelete) => {
-        if (toDelete) {
-            dispatch(unReactingToPost())
-            deleteItem('/post/' + postId + '/reaction')
-                .then(() => {
-                    dispatch(successUnReactingPost(postId))
-                })
-                .catch(error => {
-                    dispatch(errorUnReactingPost())
-                    alert('You can not un-react this post now: ' + error)
-                })
-        } else {
-            dispatch(likingPost())
-            post('/post/' + postId + '/reaction')
-                .then(() => {
-                    dispatch(successLikingPost(postId))
-                })
-                .catch(error => {
-                    dispatch(errorLikingPost())
-                    alert('You can not like this post now\': ' + error)
-                })
-        }
-    }
-
     /*const commentPost = (pictureID, comment) =>
         post('/comment/' + pictureID, comment, 'text/plain')
             .catch(error => alert(error))*/
-
-    const getFormattedDate = date => {
-        const monthNames = ["January", "February", "March", "April", "May", "June",
-            "July", "August", "September", "October", "November", "December"
-        ];
-        const d = new Date(date);
-        const postYear = d.getUTCFullYear()
-
-        return monthNames[d.getMonth()] + ' ' + d.getDate() + ' ' + (postYear === new Date().getUTCFullYear() ? '' : postYear)
-    }
 
     const isCloseToBottom = ({layoutMeasurement, contentOffset, contentSize}) => {
         const paddingToBottom = 1;
@@ -105,6 +71,17 @@ export default props => {
         return layoutMeasurement.height + contentOffset.y >=
             contentSize.height - paddingToBottom;
     };
+
+    const toggleReaction = (postId: string, toDelete: boolean) => togglePostReaction(
+        postId,
+        toDelete,
+        () => dispatch(unReactingToPost()),
+        (postId) => dispatch(successUnReactingPost(postId)),
+        () => dispatch(errorUnReactingPost()),
+        () => dispatch(likingPost()),
+        (postId) => dispatch(successLikingPost(postId)),
+        () => dispatch(errorLikingPost())
+    )
 
     return (
         <KeyboardAvoidingScrollView
@@ -145,7 +122,7 @@ export default props => {
                     username={post.userInfo.username}
                     displayName={post.userInfo.displayName}
                     profilePicUrl={post.userInfo.profilePicUrl}
-                    likePost={togglePostReaction}
+                    likePost={toggleReaction}
                     likesCount={post.likesCount}
                     //commentPost={commentPost}
                     //commentsCount={post.commentsCount}

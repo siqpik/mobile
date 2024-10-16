@@ -1,3 +1,47 @@
+import {deleteItem, post} from "@/src/domain/service/ApiService";
+
 export const shortenName = (name: string) => name.length > 9
     ? name.slice(0, 7) + '...'
     : name
+
+export const getFormattedDate = date => {
+    const monthNames = ["January", "February", "March", "April", "May", "June",
+        "July", "August", "September", "October", "November", "December"
+    ];
+    const d = new Date(date);
+    const postYear = d.getUTCFullYear()
+
+    return monthNames[d.getMonth()] + ' ' + d.getDate() + ' ' + (postYear === new Date().getUTCFullYear() ? '' : postYear)
+}
+
+export const togglePostReaction = (
+    postId: string,
+    toDelete: boolean,
+    onUnReacting: () => any,
+    onSuccessUnReacting: (postId: string) => any,
+    onErrorUnReacting: () => any,
+    onReacting: () => any,
+    onSuccessReacting: (postId: string) => any,
+    onErrorReacting: () => any) => {
+    if (toDelete) {
+        onUnReacting()
+        deleteItem('/post/' + postId + '/reaction')
+            .then(() => {
+                onSuccessUnReacting(postId)
+            })
+            .catch(error => {
+                onErrorUnReacting()
+                alert('You can not un-react this post now: ' + error)
+            })
+    } else {
+        onReacting()
+        post('/post/' + postId + '/reaction')
+            .then(() => {
+                onSuccessReacting(postId)
+            })
+            .catch(error => {
+                onErrorReacting()
+                alert('You can not like this post now\': ' + error)
+            })
+    }
+}
