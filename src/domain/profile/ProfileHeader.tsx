@@ -1,7 +1,8 @@
 import React from 'react'
-import {GestureResponderEvent, Image, Text, TouchableOpacity, View} from 'react-native';
+import {GestureResponderEvent, Text, TouchableOpacity, View} from 'react-native';
 import {styles} from "./style/styles";
 import Icon from 'react-native-vector-icons/FontAwesome';
+import FastImage from "react-native-fast-image";
 
 export const ProfileHeader = (props: { isLoggedUser: boolean; navigation: { openDrawer: () => void; }; displayName: string; username: string; profilePicUrl: string; admirersCount: number; amIAdmirer: boolean; hasPendingRequest: boolean; sendAdmireRequest: { (event: GestureResponderEvent): void; (event: GestureResponderEvent): void; }; admiredCount: number; }) =>
     <View>
@@ -16,7 +17,7 @@ export const ProfileHeader = (props: { isLoggedUser: boolean; navigation: { open
             <View>
                 <Text style={styles.name}>{props.displayName}</Text>
             </View>
-            <Image
+            <FastImage
                 key={props.username}
                 style={styles.profilePic}
                 source={{uri: props.profilePicUrl}}

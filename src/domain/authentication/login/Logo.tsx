@@ -1,11 +1,12 @@
 import React from 'react';
-import {Image, Text, View} from 'react-native';
+import {Text, View} from 'react-native';
 import {styles} from '../style/styles';
+import FastImage from "react-native-fast-image";
 
 
 export default () =>
     <View style={styles.container}>
-        <Image
+        <FastImage
             style={{width: 130, height: 130}}
             source={require('../../../../assets/icon.png')}
         />

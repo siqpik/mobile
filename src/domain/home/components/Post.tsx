@@ -1,7 +1,8 @@
 import React, {useState} from 'react';
 import {styles} from "../style/styles";
-import {Image, Text, TouchableOpacity, View} from "react-native";
+import {Text, TouchableOpacity, View} from "react-native";
 import Icon from 'react-native-vector-icons/AntDesign';
+import FastImage from "react-native-fast-image";
 
 export default (props: {
     iReacted: boolean;
@@ -42,17 +43,17 @@ export default (props: {
             <TouchableOpacity onPress={() => goToProfile()}>
                 <View style={styles.userTitle}>
 
-                    <Image source={{uri: props.profilePicUrl}} style={styles.profilePic}/>
+                    <FastImage source={{uri: props.profilePicUrl}} style={styles.profilePic}/>
                     <View style={styles.titleName}>
                         <Text style={styles.name}>{props.displayName}</Text>
                         <Text style={styles.smallerName}>{props.date}</Text>
                     </View>
                 </View>
             </TouchableOpacity>
-            <Image
+            <FastImage
                 source={{uri: props.mediaUrl}} style={styles.wallPic}
-                onError={(error) => console.log('There was an error: ' + error.nativeEvent.error)}
-                resizeMethod={'resize'}
+                //onError={(error) => console.log('There was an error: ' + error.nativeEvent.error)}
+                resizeMode={FastImage.resizeMode.cover}
             />
 
             <View style={styles.comments}>

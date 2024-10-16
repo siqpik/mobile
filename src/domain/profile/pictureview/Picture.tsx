@@ -2,6 +2,7 @@ import React from 'react'
 import {Image, ScrollView, Text, TouchableOpacity, View} from "react-native"
 import {styles} from "./style/styles"
 import PagerView from "react-native-pager-view";
+import FastImage from "react-native-fast-image";
 
 export default props => {
     const {posts, username, index, actualUser, deletePost} = props.route.params;
@@ -18,7 +19,7 @@ export default props => {
         <View key={index + 'pictureView'}>
             <Text style={styles.userTop}>{username}</Text>
 
-            <Image source={{uri: pic.mediaUrl}} style={styles.pic} resizeMethod={'resize'}/>
+            <FastImage source={{uri: pic.mediaUrl}} style={styles.pic}/>
             {actualUser ?
                 <View style={styles.buttonContainer} style={styles.titleContainer}>
 

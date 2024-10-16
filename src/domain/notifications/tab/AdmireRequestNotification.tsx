@@ -1,17 +1,19 @@
 import React from 'react'
-import {Image, Text, TouchableOpacity, View} from "react-native";
+import {Text, TouchableOpacity, View} from "react-native";
 import {styles} from "./style/styles";
 import {shortenName} from '../../shared/utils/functions';
 import {AdmireRequestStatus} from "./model/Notification";
+import FastImage from "react-native-fast-image";
 
 
 export const AdmireRequestNotification = props =>
     <View style={styles.generalLayout}>
-        <TouchableOpacity onPress={props.goToProfile}><Image
-            key={props.id}
-            style={styles.img}
-            source={{uri: props.image}}
-        />
+        <TouchableOpacity onPress={props.goToProfile}>
+            <FastImage
+                key={props.id}
+                style={styles.img}
+                source={{uri: props.image}}
+            />
             <Text style={styles.userName}>{shortenName(props.username)}</Text>
         </TouchableOpacity>
 

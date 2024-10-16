@@ -1,6 +1,7 @@
 import React from 'react';
-import {Image, TouchableOpacity} from "react-native";
+import {TouchableOpacity} from "react-native";
 import {styles} from "./style/styles";
+import FastImage from "react-native-fast-image";
 
 export default props =>
     <TouchableOpacity
@@ -14,7 +15,7 @@ export default props =>
 
         key={props.index + 'thumbnail'}
     >
-        <Image
+        <FastImage
             key={props.index}
             style={styles.picStyle}
             source={{uri: props.url}}
