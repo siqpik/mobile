@@ -13,12 +13,12 @@ import {
     successUnReactingPost,
     unReactingToPost
 } from "@/src/domain/home/modules/feedSlice";
+import {useNavigation} from "@react-navigation/native";
 
 export default (props: {
     iReacted: boolean;
     loggedUsername: string;
     username: string;
-    navigate: (arg0: string, arg1: { userName?: string; screenName?: string; }) => void;
     postKey: React.Key | null | undefined;
     profilePicUrl: string;
     displayName: string
@@ -30,18 +30,19 @@ export default (props: {
 
     const [picLiked = props.iReacted, setPicLiked] = useState<boolean>();
     const dispatch = useAppDispatch()
+    const navigation = useNavigation()
 
     //const [comment, setComment] = useState();
 
     const goToProfile = () => {
         if (props.loggedUsername !== props.username) {
             if (props.username !== 'Siqpik') {
-                props.navigate('ProfileOther', {
+                navigation.navigate('ProfileOther', {
                     userName: props.username
                 })
             }
         } else {
-            props.navigate('ProfileScreen', {
+            navigation.navigate('ProfileScreen', {
                 screenName: 'ProfileScreen',
             })
         }
