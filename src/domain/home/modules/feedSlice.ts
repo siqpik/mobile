@@ -58,7 +58,7 @@ const feedSlice = createSlice({
             state.request = REQUEST.SUCCESS
             state.posts = state.posts.map(post => {
                 return post.id === postId.payload
-                    ? {...post, likesCount: post.likesCount - 1, username: 'UnLiking!'}
+                    ? {...post, likesCount: post.likesCount - 1}
                     : post
             })
         },
