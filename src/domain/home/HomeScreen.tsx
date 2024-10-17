@@ -35,8 +35,6 @@ export default props => {
         wait(100).then(() => setRefreshing(false));
     }, []);
 
-    const {navigate} = props.navigation;
-
     useEffect(() => {
         AsyncStorage.getItem(USER_NAME_SESSION_ATTRIBUTE_NAME)
             .then(username => {
@@ -86,7 +84,6 @@ export default props => {
             }
             {posts.map((post, index) =>
                 <WallPost
-                    navigate={navigate}
                     postId={post.id}
                     key={index + ':postViewK'}
                     postKey={index + ':postView'}
