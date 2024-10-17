@@ -4,16 +4,6 @@ export const shortenName = (name: string) => name.length > 9
     ? name.slice(0, 7) + '...'
     : name
 
-export const getFormattedDate = date => {
-    const monthNames = ["January", "February", "March", "April", "May", "June",
-        "July", "August", "September", "October", "November", "December"
-    ];
-    const d = new Date(date);
-    const postYear = d.getUTCFullYear()
-
-    return monthNames[d.getMonth()] + ' ' + d.getDate() + ' ' + (postYear === new Date().getUTCFullYear() ? '' : postYear)
-}
-
 export const togglePostReaction = (
     postId: string,
     toDelete: boolean,

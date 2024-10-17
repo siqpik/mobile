@@ -3,23 +3,33 @@ import {styles} from "../style/styles";
 import {Text, TouchableOpacity, View} from "react-native";
 import Icon from 'react-native-vector-icons/AntDesign';
 import FastImage from "react-native-fast-image";
+import {useAppDispatch} from "@/src/config/hooks";
+import {togglePostReaction} from "@/src/domain/shared/utils/functions";
+import {
+    errorLikingPost,
+    errorUnReactingPost,
+    likingPost,
+    successLikingPost,
+    successUnReactingPost,
+    unReactingToPost
+} from "@/src/domain/home/modules/feedSlice";
 
 export default (props: {
     iReacted: boolean;
-    loggedUsername: any;
+    loggedUsername: string;
     username: string;
-    navigate: (arg0: string, arg1: { userName?: any; screenName?: string; }) => void;
+    navigate: (arg0: string, arg1: { userName?: string; screenName?: string; }) => void;
     postKey: React.Key | null | undefined;
-    profilePicUrl: any;
-    displayName: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | null | undefined;
-    date: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | null | undefined;
-    mediaUrl: any;
-    likesCount: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | null | undefined;
-    likePost: (arg0: any, arg1: boolean) => void;
-    id: any;
+    profilePicUrl: string;
+    displayName: string
+    date: Date
+    mediaUrl: string;
+    likesCount: number
+    postId: string;
 }) => {
 
-    const [picLiked = props.iReacted, setPicLiked]: [boolean, (value: boolean) => void] = useState();
+    const [picLiked = props.iReacted, setPicLiked] = useState<boolean>();
+    const dispatch = useAppDispatch()
 
     //const [comment, setComment] = useState();
 
@@ -37,6 +47,27 @@ export default (props: {
         }
     }
 
+    const getFormattedDate = (date: Date) => {
+        const monthNames = ["January", "February", "March", "April", "May", "June",
+            "July", "August", "September", "October", "November", "December"
+        ]
+        const d = new Date(date)
+        const postYear = d.getUTCFullYear()
+
+        return monthNames[d.getMonth()] + ' ' + d.getDate() + ' ' + (postYear === new Date().getUTCFullYear() ? '' : postYear)
+    }
+
+    const toggleReaction = (postId: string, toDelete: boolean) => togglePostReaction(
+        postId,
+        toDelete,
+        () => dispatch(unReactingToPost()),
+        (postId) => dispatch(successUnReactingPost(postId)),
+        () => dispatch(errorUnReactingPost()),
+        () => dispatch(likingPost()),
+        (postId) => dispatch(successLikingPost(postId)),
+        () => dispatch(errorLikingPost())
+    )
+
     return (
         <View key={props.postKey}>
 
@@ -46,7 +77,7 @@ export default (props: {
                     <FastImage source={{uri: props.profilePicUrl}} style={styles.profilePic}/>
                     <View style={styles.titleName}>
                         <Text style={styles.name}>{props.displayName}</Text>
-                        <Text style={styles.smallerName}>{props.date}</Text>
+                        <Text style={styles.smallerName}>{getFormattedDate(props.date)}</Text>
                     </View>
                 </View>
             </TouchableOpacity>
@@ -61,30 +92,19 @@ export default (props: {
                     {props.likesCount} like{props.likesCount > 1 ? 's' : ''}
                 </Text>
                 {/*<Text style={styles.firstComment}> {props.commentsCount} comments </Text>*/}
-                {picLiked ?
-                    <Icon
-                        onPress={() => {
-                            props.likePost(props.id, true);
-                            setPicLiked(false);
-                        }}
-                        name="star"
-                        size={35}
-                        color="black"
-                    />
-                    :
-                    <Icon
-                        onPress={() => {
-                            props.likePost(props.id, false);
-                            setPicLiked(true);
-                        }}
-                        name="staro"
-                        size={35}
-                        color="black"
-                    />
-                }
+
+                <Icon
+                    onPress={() => {
+                        toggleReaction(props.postId, picLiked);
+                        setPicLiked(!picLiked);
+                    }}
+                    name={picLiked ? "star" : "staro"}
+                    size={35}
+                    color="black"
+                />
             </View>
 
-            <View style={{ height: 21}} />
+            <View style={{height: 21}}/>
         </View>
     )
 }

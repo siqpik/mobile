@@ -4,21 +4,9 @@ import WallPost from './components/Post';
 import {KeyboardAvoidingScrollView} from 'react-native-keyboard-avoiding-scroll-view';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {USER_NAME_SESSION_ATTRIBUTE_NAME} from "../service/AuthenticationService";
-import {
-    errorLikingPost,
-    errorSearchingFeed,
-    errorUnReactingPost,
-    likingPost,
-    reset,
-    searchingFeed,
-    successLikingPost,
-    successSearchingFeed,
-    successUnReactingPost,
-    unReactingToPost
-} from "./modules/feedSlice";
+import {errorSearchingFeed, reset, searchingFeed, successSearchingFeed} from "./modules/feedSlice";
 import {useAppDispatch, useAppSelector} from "../../config/hooks";
 import {fetchFeed} from "@/src/domain/home/modules/feedService";
-import {getFormattedDate, togglePostReaction} from "@/src/domain/shared/utils/functions";
 
 export default props => {
 
@@ -28,7 +16,7 @@ export default props => {
     const [loggedUsername, setLoggedUsername] = useState<string>("");
     const [refreshing, setRefreshing] = useState(false);
 
-    const wait = timeout => {
+    const wait = (timeout: number) => {
         return new Promise(resolve => {
             getFeed()
             setTimeout(resolve, timeout);
@@ -72,17 +60,6 @@ export default props => {
             contentSize.height - paddingToBottom;
     };
 
-    const toggleReaction = (postId: string, toDelete: boolean) => togglePostReaction(
-        postId,
-        toDelete,
-        () => dispatch(unReactingToPost()),
-        (postId) => dispatch(successUnReactingPost(postId)),
-        () => dispatch(errorUnReactingPost()),
-        () => dispatch(likingPost()),
-        (postId) => dispatch(successLikingPost(postId)),
-        () => dispatch(errorLikingPost())
-    )
-
     return (
         <KeyboardAvoidingScrollView
             onScroll={({nativeEvent}) => {
@@ -97,16 +74,12 @@ export default props => {
         >
             {
                 posts.length === 0 && <WallPost
-                    date={getFormattedDate(new Date())}
+                    date={new Date()}
                     mediaUrl={'https://res.cloudinary.com/siqpik/image/upload/v1670515879/ibscji05tdziedxvfz7p.jpg'}
                     username={'Siqpik'}
                     profilePicUrl={'https://res.cloudinary.com/siqpik/image/upload/v1670515879/ibscji05tdziedxvfz7p.jpg'}
                     likesCount={9999}
-                    likePost={() => {
-                    }}
                     postKey={':postView'}
-                    //commentsCount={999}
-                    comments={[]}
                     iReacted={true}
                     loggedUsername={loggedUsername}
                 />
@@ -114,19 +87,15 @@ export default props => {
             {posts.map((post, index) =>
                 <WallPost
                     navigate={navigate}
-                    id={post.id}
+                    postId={post.id}
                     key={index + ':postViewK'}
                     postKey={index + ':postView'}
-                    date={getFormattedDate(post.date)}
+                    date={post.date}
                     mediaUrl={post.mediaUrl}
                     username={post.userInfo.username}
                     displayName={post.userInfo.displayName}
                     profilePicUrl={post.userInfo.profilePicUrl}
-                    likePost={toggleReaction}
                     likesCount={post.likesCount}
-                    //commentPost={commentPost}
-                    //commentsCount={post.commentsCount}
-                    //comments={post.comments}
                     iReacted={post.iReacted}
                     loggedUsername={loggedUsername}
                 />
