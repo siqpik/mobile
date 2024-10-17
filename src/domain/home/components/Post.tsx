@@ -89,7 +89,7 @@ export default (props: {
 
             <View style={styles.comments}>
                 <Text style={styles.firstComment}>
-                    {props.likesCount} like{props.likesCount > 1 ? 's' : ''}
+                    {props.likesCount} reaction{props.likesCount > 1 ? 's' : ''}
                 </Text>
                 {/*<Text style={styles.firstComment}> {props.commentsCount} comments </Text>*/}
 
