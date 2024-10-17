@@ -6,12 +6,13 @@ import {PicsContainer} from "./PicsContainer";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {USER_NAME_SESSION_ATTRIBUTE_NAME} from "../service/AuthenticationService";
 import {User} from "@/src/domain/profile/model/User";
+import ProfilePost from "@/src/domain/profile/model/ProfilePost";
 
 export default props => {
 
     const [user, setUser] = useState<User>()
     const [postsPage, setPostsPage] = useState<number>(1)
-    const [posts, setPosts] = useState([])
+    const [posts, setPosts] = useState<ProfilePost[]>([])
 
     useEffect(() => {
         const navigationUserName = props.route.params ? props.route.params.userName : undefined;
@@ -37,7 +38,7 @@ export default props => {
         })
 
     const getProfilePosts = (userName: string) => getJson(`/post/${userName}/${postsPage}`)
-        .then(json => json.postUrls)
+        .then(json => json.postUrls.map((post: any) => new ProfilePost(post)))
         .then(postUrls => {
             setPosts(
                 postsPage === 1 ? postUrls : [...posts, ...postUrls]
@@ -84,15 +85,13 @@ export default props => {
                         hasPendingRequest={user.hasPendingRequest}
                         sendAdmireRequest={() => sendAdmireRequest(user.userName)}
                         navigation={props.navigation}
-
                     />}
                     ListFooterComponent={
                         (user.amIAdmirer || user.isLoggedUser) &&
                         <PicsContainer
-                            isActualUser={user.isLoggedUser}
                             posts={posts}
                             navigate={props.navigation.navigate}
-                            username={user.userName}
+                            user={user}
                             deletePost={() => deletePost}
                         />
 
