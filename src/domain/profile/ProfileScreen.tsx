@@ -5,37 +5,38 @@ import {ProfileHeader} from "./ProfileHeader";
 import {PicsContainer} from "./PicsContainer";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {USER_NAME_SESSION_ATTRIBUTE_NAME} from "../service/AuthenticationService";
+import {User} from "@/src/domain/profile/model/User";
 
 export default props => {
 
-    const [user, setUser] = useState(undefined)
-    const [postsPage, setPostsPage] = useState(1)
+    const [user, setUser] = useState<User>()
+    const [postsPage, setPostsPage] = useState<number>(1)
     const [posts, setPosts] = useState([])
 
     useEffect(() => {
         const navigationUserName = props.route.params ? props.route.params.userName : undefined;
 
-        if (undefined === navigationUserName) {
-            AsyncStorage.getItem(USER_NAME_SESSION_ATTRIBUTE_NAME)
-                .then(loggedUserName => {
+        AsyncStorage.getItem(USER_NAME_SESSION_ATTRIBUTE_NAME)
+            .then(loggedUserName => {
+                if (undefined === navigationUserName) {
                     fillProfile(loggedUserName)
                         .then(() => getProfilePosts(loggedUserName))
-                })
-        } else {
-            fillProfile(navigationUserName)
-                .then(() => getProfilePosts(navigationUserName))
-        }
+                } else {
+                    fillProfile(navigationUserName)
+                        .then(() => getProfilePosts(navigationUserName))
+                }
+            })
     }, [])
 
-    const fillProfile = userName => getJson('/profile/' + userName)//TODO change to /user/username/profile
+    const fillProfile = (userName: string) => getJson('/profile/' + userName)//TODO change to /user/username/profile
         .then(u => {
-            setUser(u)
+            setUser(new User(u))
         })
         .catch(error => {
             alert("Error finding " + userName + " profile: " + error)
         })
 
-    const getProfilePosts = userName => getJson(`/post/${userName}/${postsPage}`)
+    const getProfilePosts = (userName: string) => getJson(`/post/${userName}/${postsPage}`)
         .then(json => json.postUrls)
         .then(postUrls => {
             setPosts(
@@ -50,7 +51,7 @@ export default props => {
             console.log(typeof error)
         })
 
-    const sendAdmireRequest = userName => post('/admire-request/' + userName)
+    const sendAdmireRequest = (userName: string) => post('/admire-request/' + userName)
         .then(resp => {
             if (resp.status === 201) {
                 setUser({
@@ -60,15 +61,13 @@ export default props => {
             }
         }).catch(error => alert("Admire request cannot be sent now. Please try again later: " + error))
 
-    const deletePost = postId => {
-        deleteItem('/post/' + postId)
-            .then(resp => {
-                if (resp.status === 202) {
-                    const newPosts = posts.filter(post => post.id !== postId)
-                    setPosts(newPosts)
-                }
-            })
-    }
+    const deletePost = (postId: string) => deleteItem('/post/' + postId)
+        .then(resp => {
+            if (resp.status === 202) {
+                const newPosts = posts.filter(post => post.id !== postId)
+                setPosts(newPosts)
+            }
+        })
 
     return (
         user
@@ -93,7 +92,7 @@ export default props => {
                             isActualUser={user.isLoggedUser}
                             posts={posts}
                             navigate={props.navigation.navigate}
-                            username={user.name}
+                            username={user.userName}
                             deletePost={() => deletePost}
                         />
 
