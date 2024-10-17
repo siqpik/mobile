@@ -1,11 +1,14 @@
 import React from 'react'
-import {Image, ScrollView, Text, TouchableOpacity, View} from "react-native"
+import {ScrollView, Text, TouchableOpacity, View} from "react-native"
 import {styles} from "./style/styles"
 import PagerView from "react-native-pager-view";
 import FastImage from "react-native-fast-image";
+import WallPost from "@/src/domain/home/components/Post";
+import {User} from "@/src/domain/profile/model/User";
 
-export default props => {
-    const {posts, username, index, actualUser, deletePost} = props.route.params;
+export default (props: { route: { params: { posts: any; user: User; index: any; deletePost: any; }; }; navigation: { (arg0: string, arg1: { userName?: string | undefined; screenName?: string | undefined; }): void; navigate?: any; }; }) => {
+
+    const {posts, user, index, deletePost} = props.route.params;
 
     /*const changeProfilePic = pidId =>
         post('/profile/changeProfilePic/' + pidId)
@@ -15,12 +18,12 @@ export default props => {
                 }
             }).catch(error => alert(error));*/
 
-    const getPics = () => posts.map((pic, index) =>
+    const getPics = () => posts.map((post, index) =>
         <View key={index + 'pictureView'}>
-            <Text style={styles.userTop}>{username}</Text>
+            <Text style={styles.userTop}>{user.userName}</Text>
 
-            <FastImage source={{uri: pic.mediaUrl}} style={styles.pic}/>
-            {actualUser ?
+            <FastImage source={{uri: post.mediaUrl}} style={styles.pic}/>
+            {user.isLoggedUser ?
                 <View style={styles.buttonContainer} style={styles.titleContainer}>
 
                     {/*<TouchableOpacity onPress={() => changeProfilePic(pic.id)}
@@ -29,7 +32,7 @@ export default props => {
                 </TouchableOpacity>*/}
                     {<TouchableOpacity onPress={() => {
                         props.navigation.navigate("Profile")
-                        deletePost()(pic.id)
+                        deletePost()(post.id)
                     }}
                                        style={styles.delete_button}>
                         <Text>Delete</Text>
@@ -38,10 +41,9 @@ export default props => {
                 <View></View>
             }
             <ScrollView style={styles.commentContainer} alwaysBounceHorizontal={false}>
-                <Text style={styles.date}>{pic.date}</Text>
+                <Text style={styles.date}>{post.date}</Text>
                 {/**getComments(pic)*/}
             </ScrollView>
-
         </View>
     )
 
