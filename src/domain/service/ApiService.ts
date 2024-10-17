@@ -5,17 +5,17 @@ import {logout} from './AuthenticationService'
 //const API_URL = 'http://localhost:8080';
 const API_URL = 'https://siqpik.up.railway.app';
 
-export const post = (url, body, contentType) => {
+export const post = (url: string, body?: any, contentType?: any) => {
     return authenticatedRequest(url,
         'POST', body, contentType);
 }
 
-export const patch = (url, body, contentType) => {
+export const patch = (url: string, body: any, contentType: any) => {
     return authenticatedRequest(url,
         'PATCH', body, contentType);
 }
 
-export const uploadMedia = media =>
+export const uploadMedia = (media: any) =>
     AsyncStorage.getItem(TOKEN_SESSION)
         .then(jwt => fetch(API_URL + '/post/', {
                 method: 'POST',
@@ -29,14 +29,14 @@ export const uploadMedia = media =>
         return handleErrors(response)
     })
 
-export const deleteItem = (url: string, body: undefined, contentType: undefined) => authenticatedRequest(url,
+export const deleteItem = (url: string, body?: undefined, contentType?: undefined) => authenticatedRequest(url,
     'DELETE', body, contentType);
 
-export const getJson = url => authenticatedRequest(url, 'GET')
+export const getJson = (url: string) => authenticatedRequest(url, 'GET')
     .then(response => response.json());
 
-export const authenticatedRequest = (url, method, body?,
-                                     contentType?) => AsyncStorage.getItem(TOKEN_SESSION)
+export const authenticatedRequest = (url: string, method: string, body?: any,
+                                     contentType?: string) => AsyncStorage.getItem(TOKEN_SESSION)
     .then(token => {
         return genericFetch(url, method,
             {
@@ -47,31 +47,30 @@ export const authenticatedRequest = (url, method, body?,
         )
     })
 
-export const genericPost = (url, body) =>
+export const genericPost = (url: string, body: any) =>
     genericPostWithNoResponse(url, body)
         .then(response => response.json())
 
-export const genericPatch = (url, body) =>
+export const genericPatch = (url: string, body: any) =>
     genericFetch(url, 'PATCH', {'Content-Type': 'application/json'},
         JSON.stringify(body))
 
-export const genericPostWithNoResponse = (url, body) =>
+export const genericPostWithNoResponse = (url: string, body: any) =>
     genericFetch(url, 'POST', {'Content-Type': 'application/json'},
         JSON.stringify(body))
 
-const genericFetch = (url, method, headers, body) => {
+const genericFetch = async (url: string, method: string, headers: any, body: any) => {
     const fullUrl = API_URL + url
 
-    return fetch(fullUrl, {
+    const response = await fetch(fullUrl, {
         method: method,
         headers: headers,
         body: body
-    }).then(response => {
-        return handleErrors(response)
-    })
+    });
+    return handleErrors(response);
 }
 
-function handleErrors(response) {
+function handleErrors(response: any) {
     if (!response.ok) {
         console.log("Something went wrong fetching: " + JSON.stringify(response))
         if (403 === response.status) {
