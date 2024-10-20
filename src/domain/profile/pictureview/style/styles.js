@@ -11,9 +11,6 @@ export const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'space-between'
     },
-    takenPic:{
-        flex: 1,
-    },
     pic: {
         flex: 2,
         resizeMode: 'cover',
