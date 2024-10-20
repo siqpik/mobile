@@ -7,15 +7,21 @@ import {useAppDispatch} from "@/src/config/hooks";
 import {togglePostReaction} from "@/src/domain/shared/utils/functions";
 import {
     errorLikingPost,
+    errorSearchingFeed,
     errorUnReactingPost,
     likingPost,
+    reset,
+    searchingFeed,
     successLikingPost,
+    successSearchingFeed,
     successUnReactingPost,
     unReactingToPost
 } from "@/src/domain/home/modules/feedSlice"
 import {useNavigation} from "@react-navigation/native"
 import {Gesture, GestureDetector} from "react-native-gesture-handler";
 import PostMenu from "@/src/domain/shared/components/PostMenu";
+import {fetchFeed} from "@/src/domain/home/modules/feedService";
+import {deleteItem} from "@/src/domain/service/ApiService";
 
 export default (props: {
     iReacted: boolean;
@@ -28,18 +34,21 @@ export default (props: {
     mediaUrl: string;
     likesCount: number
     postId: string;
+    onDeletePost: any
 }) => {
 
     const [picLiked = props.iReacted, setPicLiked] = useState<boolean>();
     const [reactionCount, setReactionCount] = useState<number>(props.likesCount);
     const dispatch = useAppDispatch()
     const navigation = useNavigation()
+    const [currentScreen, setCurrentScreen] = useState<String>()
 
     //const [comment, setComment] = useState();
 
     useEffect(() => {
         //alert(JSON.stringify(props.username))
     }, []);
+
     const goToProfile = () => {
         if (props.loggedUsername !== props.username) {
             if (props.username !== 'Siqpik') {
@@ -64,6 +73,16 @@ export default (props: {
         return monthNames[d.getMonth()] + ' ' + d.getDate() + ' ' + (postYear === new Date().getUTCFullYear() ? '' : postYear)
     }
 
+    const getFeed = () => {
+        dispatch(reset())
+        fetchFeed(
+            1,
+            () => dispatch(searchingFeed()),
+            (payload) => dispatch(successSearchingFeed(payload)),
+            () => dispatch(errorSearchingFeed())
+        )
+    }
+
     const toggleReaction = () => {
         setReactionCount(picLiked ? reactionCount - 1 : reactionCount + 1)
         togglePostReaction(
@@ -78,6 +97,18 @@ export default (props: {
         )
 
         setPicLiked(!picLiked);
+    }
+
+    const deletePost = () => {
+        if (props.onDeletePost) {
+            props.onDeletePost()(props.postId)
+        }
+        deleteItem('/post/' + props.postId)
+            .then(resp => {
+                if (resp.status === 202) {
+                    getFeed()
+                }
+            })
     }
 
     const doubleTap = Gesture.Tap()
@@ -105,8 +136,10 @@ export default (props: {
                     </View>
                 </TouchableOpacity>
 
-                {props.loggedUsername === props.username &&
-                    <PostMenu/>
+                {(props.loggedUsername === props.username && props.onDeletePost) &&
+                    <PostMenu
+                        deletePost={() => deletePost()}
+                    />
                 }
             </View>
 

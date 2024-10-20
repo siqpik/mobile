@@ -8,7 +8,7 @@ export const PicsContainer = (props: {
     posts: ProfilePost[]
     user: User;
     navigate: (arg0: string, arg1: { index: any; posts: ProfilePost[]; user: User; deletePost: any; }) => void;
-    deletePost: any;
+    onDeletePost: any;
     loggedUsername: string
 }) =>
     <FlatGrid
@@ -23,7 +23,7 @@ export const PicsContainer = (props: {
                 posts={props.posts}
                 user={props.user}
                 navigate={props.navigate}
-                deletePost={props.deletePost}
+                onDeletePost={props.onDeletePost}
                 loggedUsername={props.loggedUsername}
             />
         )}

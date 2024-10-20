@@ -9,7 +9,7 @@ export default (props: {
     index: React.Key | null | undefined;
     posts: any;
     user: User;
-    deletePost: any;
+    onDeletePost: any;
     url: any;
     loggedUsername: string
 }) =>
@@ -18,7 +18,7 @@ export default (props: {
             index: props.index,
             posts: props.posts,
             user: props.user,
-            deletePost: props.deletePost,
+            onDeletePost: props.onDeletePost,
             loggedUsername: props.loggedUsername
         })}
 

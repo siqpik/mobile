@@ -3,14 +3,14 @@ import {Platform, View} from "react-native";
 import {Entypo} from "@expo/vector-icons";
 import React from "react";
 
-export default () =>
+export default (props: { deletePost: () => void; }) =>
     <MenuView
         style={{position: "absolute", top: 20, right: 20}}
         title="Menu Title"
         onPressAction={({nativeEvent}) => {
             console.warn(JSON.stringify(nativeEvent));
             if (nativeEvent.event === 'delete') {
-                alert('Eliminando...')
+                props.deletePost();
             }
         }}
         actions={[

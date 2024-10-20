@@ -1,5 +1,5 @@
 import React from 'react'
-import {Text, TouchableOpacity, View} from "react-native"
+import {View} from "react-native"
 import {styles} from "./style/styles"
 import PagerView from "react-native-pager-view";
 import WallPost from "@/src/domain/shared/components/Post";
@@ -8,14 +8,14 @@ import {KeyboardAvoidingScrollView} from "react-native-keyboard-avoiding-scroll-
 import ProfilePost from "@/src/domain/profile/model/ProfilePost";
 
 export default (props: {
-    route: { params: { posts: any; user: User; index: any; deletePost: any; loggedUsername: string }; };
+    route: { params: { posts: any; user: User; index: any; onDeletePost: any; loggedUsername: string }; };
     navigation: {
         (arg0: string, arg1: { userName?: string | undefined; screenName?: string | undefined; }): void;
         navigate?: any;
     };
 }) => {
 
-    const {posts, user, index, deletePost, loggedUsername} = props.route.params;
+    const {posts, user, index, onDeletePost, loggedUsername} = props.route.params;
 
     /*const changeProfilePic = pidId =>
         post('/profile/changeProfilePic/' + pidId)
@@ -40,24 +40,8 @@ export default (props: {
                     likesCount={post.reactionsCount}
                     iReacted={post.iReacted}
                     loggedUsername={loggedUsername}
+                    onDeletePost={onDeletePost}
                 />
-
-                {user.isLoggedUser ?
-                    <View style={styles.buttonContainer} style={styles.titleContainer}>
-
-                        {/*<TouchableOpacity onPress={() => changeProfilePic(pic.id)}
-                                  style={styles.delete_button}>
-                    <Text>Make Profile Picture</Text>
-                </TouchableOpacity>*/}
-                        {<TouchableOpacity onPress={() => {
-                            props.navigation.navigate("Profile")
-                            deletePost()(post.id)
-                        }} style={styles.delete_button}>
-                            <Text>Delete</Text>
-                        </TouchableOpacity>}
-                    </View> :
-                    <View></View>
-                }
             </KeyboardAvoidingScrollView>
         </View>
     )
