@@ -1,14 +1,21 @@
 import React from 'react'
-import {ScrollView, Text, TouchableOpacity, View} from "react-native"
+import {Text, TouchableOpacity, View} from "react-native"
 import {styles} from "./style/styles"
 import PagerView from "react-native-pager-view";
-import FastImage from "react-native-fast-image";
 import WallPost from "@/src/domain/home/components/Post";
 import {User} from "@/src/domain/profile/model/User";
+import {KeyboardAvoidingScrollView} from "react-native-keyboard-avoiding-scroll-view";
+import ProfilePost from "@/src/domain/profile/model/ProfilePost";
 
-export default (props: { route: { params: { posts: any; user: User; index: any; deletePost: any; }; }; navigation: { (arg0: string, arg1: { userName?: string | undefined; screenName?: string | undefined; }): void; navigate?: any; }; }) => {
+export default (props: {
+    route: { params: { posts: any; user: User; index: any; deletePost: any; loggedUsername: string }; };
+    navigation: {
+        (arg0: string, arg1: { userName?: string | undefined; screenName?: string | undefined; }): void;
+        navigate?: any;
+    };
+}) => {
 
-    const {posts, user, index, deletePost} = props.route.params;
+    const {posts, user, index, deletePost, loggedUsername} = props.route.params;
 
     /*const changeProfilePic = pidId =>
         post('/profile/changeProfilePic/' + pidId)
@@ -18,32 +25,40 @@ export default (props: { route: { params: { posts: any; user: User; index: any; 
                 }
             }).catch(error => alert(error));*/
 
-    const getPics = () => posts.map((post, index) =>
-        <View key={index + 'pictureView'}>
-            <Text style={styles.userTop}>{user.userName}</Text>
+    const getPics = () => posts.map((post: ProfilePost, index: string) =>
+        <View style={styles.container} key={index + 'pictureView'}>
+            <KeyboardAvoidingScrollView>
+                <WallPost
+                    postId={post.id}
+                    key={index + ':postViewK'}
+                    postKey={index + ':postView'}
+                    date={post.date}
+                    mediaUrl={post.mediaUrl}
+                    username={user.userName}
+                    displayName={user.displayName}
+                    profilePicUrl={user.profilePicUrl}
+                    likesCount={post.reactionsCount}
+                    iReacted={post.iReacted}
+                    loggedUsername={loggedUsername}
+                />
 
-            <FastImage source={{uri: post.mediaUrl}} style={styles.pic}/>
-            {user.isLoggedUser ?
-                <View style={styles.buttonContainer} style={styles.titleContainer}>
+                {user.isLoggedUser ?
+                    <View style={styles.buttonContainer} style={styles.titleContainer}>
 
-                    {/*<TouchableOpacity onPress={() => changeProfilePic(pic.id)}
+                        {/*<TouchableOpacity onPress={() => changeProfilePic(pic.id)}
                                   style={styles.delete_button}>
                     <Text>Make Profile Picture</Text>
                 </TouchableOpacity>*/}
-                    {<TouchableOpacity onPress={() => {
-                        props.navigation.navigate("Profile")
-                        deletePost()(post.id)
-                    }}
-                                       style={styles.delete_button}>
-                        <Text>Delete</Text>
-                    </TouchableOpacity>}
-                </View> :
-                <View></View>
-            }
-            <ScrollView style={styles.commentContainer} alwaysBounceHorizontal={false}>
-                <Text style={styles.date}>{post.date}</Text>
-                {/**getComments(pic)*/}
-            </ScrollView>
+                        {<TouchableOpacity onPress={() => {
+                            props.navigation.navigate("Profile")
+                            deletePost()(post.id)
+                        }} style={styles.delete_button}>
+                            <Text>Delete</Text>
+                        </TouchableOpacity>}
+                    </View> :
+                    <View></View>
+                }
+            </KeyboardAvoidingScrollView>
         </View>
     )
 
@@ -51,15 +66,13 @@ export default (props: { route: { params: { posts: any; user: User; index: any; 
         <View key={index} style={styles.comments}>
             <Text style={styles.user}>{post.userName}</Text>
             <Text style={styles.comment}>{post.comments}</Text>
-        </View>
+        </View
     )*/
 
     return (
-        <View style={styles.container}>
-            <PagerView style={styles.takenPic} initialPage={index} showPageIndicator={false}
-                       orientation={'horizontal'}>
-                {getPics()}
-            </PagerView>
-        </View>
+        <PagerView style={{flex: 1}} initialPage={index} showPageIndicator={false}
+                   orientation={'vertical'}>
+            {getPics()}
+        </PagerView>
     )
 }
