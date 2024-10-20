@@ -7,12 +7,7 @@ import {useFocusEffect} from "@react-navigation/core";
 
 export default () => {
 
-    const navigation = useNavigation();
-
-    useEffect(() => {
-        AsyncStorage.getItem(TOKEN_SESSION)
-            .then(token => navigation.navigate(token ? 'RootNavigation' : 'Login'))
-    }, []);
+    const navigation = useNavigation()
 
     useFocusEffect(() => {
         AsyncStorage.getItem(TOKEN_SESSION)
