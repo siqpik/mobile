@@ -18,7 +18,7 @@ export const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
-    width: '100%',
+    width: '30%',
     height: 70
   },
   titleName: {
