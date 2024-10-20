@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {styles} from "../style/styles";
 import {Text, TouchableOpacity, View} from "react-native";
 import Icon from 'react-native-vector-icons/AntDesign';
@@ -12,8 +12,10 @@ import {
     successLikingPost,
     successUnReactingPost,
     unReactingToPost
-} from "@/src/domain/home/modules/feedSlice";
-import {useNavigation} from "@react-navigation/native";
+} from "@/src/domain/home/modules/feedSlice"
+import {useNavigation} from "@react-navigation/native"
+import {PopMenu, PopMenuItem, PopMenuProvider} from "react-native-simple-pop-menu";
+import Button = Icon.Button;
 
 export default (props: {
     iReacted: boolean;
@@ -29,11 +31,15 @@ export default (props: {
 }) => {
 
     const [picLiked = props.iReacted, setPicLiked] = useState<boolean>();
+    const [reactionCount, setReactionCount] = useState<number>(props.likesCount);
     const dispatch = useAppDispatch()
     const navigation = useNavigation()
 
     //const [comment, setComment] = useState();
 
+    useEffect(() => {
+        //alert(JSON.stringify(props.username))
+    }, []);
     const goToProfile = () => {
         if (props.loggedUsername !== props.username) {
             if (props.username !== 'Siqpik') {
@@ -58,30 +64,40 @@ export default (props: {
         return monthNames[d.getMonth()] + ' ' + d.getDate() + ' ' + (postYear === new Date().getUTCFullYear() ? '' : postYear)
     }
 
-    const toggleReaction = (postId: string, toDelete: boolean) => togglePostReaction(
-        postId,
-        toDelete,
-        () => dispatch(unReactingToPost()),
-        (postId) => dispatch(successUnReactingPost(postId)),
-        () => dispatch(errorUnReactingPost()),
-        () => dispatch(likingPost()),
-        (postId) => dispatch(successLikingPost(postId)),
-        () => dispatch(errorLikingPost())
-    )
+    const toggleReaction = (postId: string) => {
+        setReactionCount(picLiked ? reactionCount - 1 : reactionCount + 1)
+        togglePostReaction(
+            postId,
+            picLiked,
+            () => dispatch(unReactingToPost()),
+            (postId) => dispatch(successUnReactingPost(postId)),
+            () => dispatch(errorUnReactingPost()),
+            () => dispatch(likingPost()),
+            (postId) => dispatch(successLikingPost(postId)),
+            () => dispatch(errorLikingPost())
+        )
+
+        setPicLiked(!picLiked);
+    }
 
     return (
-        <View key={props.postKey}>
+        <View key={props.postKey} style={{flex: 1}}>
+            <TouchableOpacity onPress={() => goToProfile()} style={styles.userTitle}>
+                <FastImage source={{uri: props.profilePicUrl}} style={styles.profilePic}/>
 
-            <TouchableOpacity onPress={() => goToProfile()}>
-                <View style={styles.userTitle}>
-
-                    <FastImage source={{uri: props.profilePicUrl}} style={styles.profilePic}/>
-                    <View style={styles.titleName}>
-                        <Text style={styles.name}>{props.displayName}</Text>
-                        <Text style={styles.smallerName}>{getFormattedDate(props.date)}</Text>
-                    </View>
+                <View style={styles.titleName}>
+                    <Text style={styles.name}>{props.displayName}</Text>
+                    <Text style={styles.smallerName}>{getFormattedDate(props.date)}</Text>
                 </View>
             </TouchableOpacity>
+
+            {props.loggedUsername === props.username &&
+                <TouchableOpacity onPress={() => console.log(props.loggedUsername)}
+                                  style={{position: "absolute", top: 20, right: 0}}>
+                    <Text>{'Remove'}</Text>
+                </TouchableOpacity>
+            }
+
             <FastImage
                 source={{uri: props.mediaUrl}} style={styles.wallPic}
                 //onError={(error) => console.log('There was an error: ' + error.nativeEvent.error)}
@@ -90,15 +106,12 @@ export default (props: {
 
             <View style={styles.comments}>
                 <Text style={styles.firstComment}>
-                    {props.likesCount} reaction{props.likesCount > 1 ? 's' : ''}
+                    {reactionCount} reaction{reactionCount === 1 ? '' : 's'}
                 </Text>
                 {/*<Text style={styles.firstComment}> {props.commentsCount} comments </Text>*/}
 
                 <Icon
-                    onPress={() => {
-                        toggleReaction(props.postId, picLiked);
-                        setPicLiked(!picLiked);
-                    }}
+                    onPress={() => toggleReaction(props.postId)}
                     name={picLiked ? "star" : "staro"}
                     size={35}
                     color="black"
