@@ -2,7 +2,7 @@ import React from 'react'
 import {Text, TouchableOpacity, View} from "react-native"
 import {styles} from "./style/styles"
 import PagerView from "react-native-pager-view";
-import WallPost from "@/src/domain/home/components/Post";
+import WallPost from "@/src/domain/shared/components/Post";
 import {User} from "@/src/domain/profile/model/User";
 import {KeyboardAvoidingScrollView} from "react-native-keyboard-avoiding-scroll-view";
 import ProfilePost from "@/src/domain/profile/model/ProfilePost";

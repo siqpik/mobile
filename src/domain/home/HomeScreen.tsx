@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {RefreshControl} from 'react-native';
-import WallPost from './components/Post';
+import WallPost from '../shared/components/Post';
 import {KeyboardAvoidingScrollView} from 'react-native-keyboard-avoiding-scroll-view';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {USER_NAME_SESSION_ATTRIBUTE_NAME} from "../service/AuthenticationService";
