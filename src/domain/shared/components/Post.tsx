@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {styles} from "../style/styles";
+import {styles} from "../../home/style/styles";
 import {Text, TouchableOpacity, View} from "react-native";
 import Icon from 'react-native-vector-icons/AntDesign';
 import FastImage from "react-native-fast-image";
@@ -14,8 +14,8 @@ import {
     unReactingToPost
 } from "@/src/domain/home/modules/feedSlice"
 import {useNavigation} from "@react-navigation/native"
-import {PopMenu, PopMenuItem, PopMenuProvider} from "react-native-simple-pop-menu";
-import Button = Icon.Button;
+import {Gesture, GestureDetector} from "react-native-gesture-handler";
+import PostMenu from "@/src/domain/shared/components/PostMenu";
 
 export default (props: {
     iReacted: boolean;
@@ -64,10 +64,10 @@ export default (props: {
         return monthNames[d.getMonth()] + ' ' + d.getDate() + ' ' + (postYear === new Date().getUTCFullYear() ? '' : postYear)
     }
 
-    const toggleReaction = (postId: string) => {
+    const toggleReaction = () => {
         setReactionCount(picLiked ? reactionCount - 1 : reactionCount + 1)
         togglePostReaction(
-            postId,
+            props.postId,
             picLiked,
             () => dispatch(unReactingToPost()),
             (postId) => dispatch(successUnReactingPost(postId)),
@@ -80,29 +80,44 @@ export default (props: {
         setPicLiked(!picLiked);
     }
 
+    const doubleTap = Gesture.Tap()
+        .numberOfTaps(2)
+        .onStart(() => {
+            console.log("Reacting soon...")
+        });
+
     return (
-        <View key={props.postKey} style={{flex: 1}}>
-            <TouchableOpacity onPress={() => goToProfile()} style={styles.userTitle}>
-                <FastImage source={{uri: props.profilePicUrl}} style={styles.profilePic}/>
+        <View key={props.postKey}>
+            <View
+                style={{
+                    flex: 1,
+                    flexDirection: 'row',
+                    flexWrap: 'wrap',
+                    alignItems: 'flex-start' // if you want to fill rows left to right
+                }}
+            >
+                <TouchableOpacity onPress={() => goToProfile()} style={styles.userTitle}>
 
-                <View style={styles.titleName}>
-                    <Text style={styles.name}>{props.displayName}</Text>
-                    <Text style={styles.smallerName}>{getFormattedDate(props.date)}</Text>
-                </View>
-            </TouchableOpacity>
-
-            {props.loggedUsername === props.username &&
-                <TouchableOpacity onPress={() => console.log(props.loggedUsername)}
-                                  style={{position: "absolute", top: 20, right: 0}}>
-                    <Text>{'Remove'}</Text>
+                    <FastImage source={{uri: props.profilePicUrl}} style={styles.profilePic}/>
+                    <View style={styles.titleName}>
+                        <Text style={styles.name}>{props.displayName}</Text>
+                        <Text style={styles.smallerName}>{getFormattedDate(props.date)}</Text>
+                    </View>
                 </TouchableOpacity>
-            }
 
-            <FastImage
-                source={{uri: props.mediaUrl}} style={styles.wallPic}
-                //onError={(error) => console.log('There was an error: ' + error.nativeEvent.error)}
-                resizeMode={FastImage.resizeMode.cover}
-            />
+                {props.loggedUsername === props.username &&
+                    <PostMenu/>
+                }
+            </View>
+
+            <GestureDetector gesture={doubleTap}>
+                <FastImage
+                    source={{uri: props.mediaUrl}} style={styles.wallPic}
+                    //onError={(error) => console.log('There was an error: ' + error.nativeEvent.error)}
+                    resizeMode={FastImage.resizeMode.cover}
+                />
+            </GestureDetector>
+
 
             <View style={styles.comments}>
                 <Text style={styles.firstComment}>
@@ -111,7 +126,7 @@ export default (props: {
                 {/*<Text style={styles.firstComment}> {props.commentsCount} comments </Text>*/}
 
                 <Icon
-                    onPress={() => toggleReaction(props.postId)}
+                    onPress={() => toggleReaction()}
                     name={picLiked ? "star" : "staro"}
                     size={35}
                     color="black"
