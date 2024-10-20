@@ -61,7 +61,7 @@ export default props => {
                         ? 'https://www.stripersonline.com/surftalk/uploads/monthly_2021_02/loading.gif.89b2096f8e6af0dc8cac58c5683938dd.gif'
                         : `file://${props.route.params.state.image.path}`
                 }}
-                                 style={styles.takenPic}>
+                                 style={{flex: 1}}>
                     {!isPosting && <View style={styles.countdown}>
                         <CountDown
                             until={60 * 3}

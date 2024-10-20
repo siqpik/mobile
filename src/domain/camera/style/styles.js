@@ -13,9 +13,6 @@ export const styles = StyleSheet.create({
         alignSelf: 'stretch',
         borderStyle: 'solid'
     },
-    takenPic: {
-        flex: 1
-    },
     countdown: {
         flex: 1.2,
         flexDirection: 'column',
