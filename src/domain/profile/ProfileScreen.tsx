@@ -13,20 +13,24 @@ export default props => {
     const [user, setUser] = useState<User>()
     const [postsPage, setPostsPage] = useState<number>(1)
     const [posts, setPosts] = useState<ProfilePost[]>([])
+    const [loggedUsername, setLoggedUsername] = useState<String>()
 
     useEffect(() => {
         const navigationUserName = props.route.params ? props.route.params.userName : undefined;
 
-        AsyncStorage.getItem(USER_NAME_SESSION_ATTRIBUTE_NAME)
-            .then(loggedUserName => {
-                if (undefined === navigationUserName) {
-                    fillProfile(loggedUserName)
-                        .then(() => getProfilePosts(loggedUserName))
-                } else {
-                    fillProfile(navigationUserName)
-                        .then(() => getProfilePosts(navigationUserName))
-                }
-            })
+        if (undefined === navigationUserName) {
+            AsyncStorage.getItem(USER_NAME_SESSION_ATTRIBUTE_NAME)
+                .then(loggedUserName => {
+                    if (loggedUserName) {
+                        getProfilePosts(loggedUserName)
+                        fillProfile(loggedUserName)
+                        setLoggedUsername(loggedUserName)
+                    }
+                })
+        } else {
+            getProfilePosts(navigationUserName)
+            fillProfile(navigationUserName)
+        }
     }, [])
 
     const fillProfile = (userName: string) => getJson('/profile/' + userName)//TODO change to /user/username/profile
@@ -93,8 +97,8 @@ export default props => {
                             navigate={props.navigation.navigate}
                             user={user}
                             deletePost={() => deletePost}
+                            loggedUsername={loggedUsername}
                         />
-
                     }
                 />
             )

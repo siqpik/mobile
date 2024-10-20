@@ -9,6 +9,7 @@ export const PicsContainer = (props: {
     user: User;
     navigate: (arg0: string, arg1: { index: any; posts: ProfilePost[]; user: User; deletePost: any; }) => void;
     deletePost: any;
+    loggedUsername: string
 }) =>
     <FlatGrid
         contentContainerStyle={{alignItems: 'center'}}
@@ -23,6 +24,7 @@ export const PicsContainer = (props: {
                 user={props.user}
                 navigate={props.navigate}
                 deletePost={props.deletePost}
+                loggedUsername={props.loggedUsername}
             />
         )}
     />

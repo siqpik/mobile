@@ -11,13 +11,15 @@ export default (props: {
     user: User;
     deletePost: any;
     url: any;
+    loggedUsername: string
 }) =>
     <TouchableOpacity
         onPress={() => props.navigate('Picture', {
             index: props.index,
             posts: props.posts,
             user: props.user,
-            deletePost: props.deletePost
+            deletePost: props.deletePost,
+            loggedUsername: props.loggedUsername
         })}
 
         key={props.index + 'thumbnail'}
