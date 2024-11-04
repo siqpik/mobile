@@ -4,7 +4,7 @@ import {Text, TouchableOpacity, View} from "react-native";
 import Icon from 'react-native-vector-icons/AntDesign';
 import FastImage from "react-native-fast-image";
 import {useAppDispatch} from "@/src/config/hooks";
-import {togglePostReaction} from "@/src/domain/shared/utils/functions";
+import {togglePostReactionOnFeed} from "@/src/domain/shared/utils/functions";
 import {
     errorLikingPost,
     errorSearchingFeed,
@@ -20,8 +20,10 @@ import {
 import {useNavigation} from "@react-navigation/native"
 import {Gesture, GestureDetector} from "react-native-gesture-handler";
 import PostMenu from "@/src/domain/shared/components/PostMenu";
-import {fetchFeed} from "@/src/domain/home/modules/feedService";
+import {fetchFeed} from "@/src/domain/shared/feedService";
 import {deleteItem} from "@/src/domain/service/ApiService";
+import {useRoute} from "@react-navigation/core";
+import {addPostReaction, removeReaction} from "@/src/domain/profile/modules/profileSlice";
 
 export default (props: {
     iReacted: boolean;
@@ -37,11 +39,12 @@ export default (props: {
     onDeletePost: any
 }) => {
 
-    const [picLiked = props.iReacted, setPicLiked] = useState<boolean>();
-    const [reactionCount, setReactionCount] = useState<number>(props.likesCount);
     const dispatch = useAppDispatch()
     const navigation = useNavigation()
     const [currentScreen, setCurrentScreen] = useState<String>()
+    const [iReacted, setIReacted] = useState<boolean>(props.iReacted)
+    const [reactionCount, setReactionCount] = useState<number>(props.likesCount);
+    const route = useRoute()
 
     //const [comment, setComment] = useState();
 
@@ -84,10 +87,19 @@ export default (props: {
     }
 
     const toggleReaction = () => {
-        setReactionCount(picLiked ? reactionCount - 1 : reactionCount + 1)
-        togglePostReaction(
+        if ('Picture' === route.name) {
+            if (iReacted){
+                setReactionCount(reactionCount - 1)
+                dispatch(removeReaction(props.postId))
+            } else {
+                dispatch(addPostReaction(props.postId))
+                setReactionCount(reactionCount + 1)
+            }
+        }
+
+        togglePostReactionOnFeed(
             props.postId,
-            picLiked,
+            props.iReacted,
             () => dispatch(unReactingToPost()),
             (postId) => dispatch(successUnReactingPost(postId)),
             () => dispatch(errorUnReactingPost()),
@@ -96,7 +108,7 @@ export default (props: {
             () => dispatch(errorLikingPost())
         )
 
-        setPicLiked(!picLiked);
+        setIReacted(!iReacted)
     }
 
     const deletePost = () => {
@@ -114,8 +126,30 @@ export default (props: {
     const doubleTap = Gesture.Tap()
         .numberOfTaps(2)
         .onStart(() => {
+            toggleReaction()
             console.log("Reacting soon...")
         });
+
+    const getReactionIconName = () => {
+        if (route.name === 'Picture'){
+            return iReacted ? 'star' : 'staro'
+        }
+
+        return props.iReacted ? 'star' : 'staro'
+    }
+
+    const getReactionsCount=()=>{
+        if (route.name === 'Picture'){
+            return reactionCount
+        }
+
+        return props.likesCount
+    }
+
+    const getReactionsText = ()=>{
+        const count = getReactionsCount()
+        return `${count} reaction${count === 1 ? '' : 's'}`
+    }
 
     return (
         <View key={props.postKey}>
@@ -151,16 +185,15 @@ export default (props: {
                 />
             </GestureDetector>
 
-
             <View style={styles.comments}>
                 <Text style={styles.firstComment}>
-                    {reactionCount} reaction{reactionCount === 1 ? '' : 's'}
+                    {getReactionsText()}
                 </Text>
                 {/*<Text style={styles.firstComment}> {props.commentsCount} comments </Text>*/}
 
                 <Icon
                     onPress={() => toggleReaction()}
-                    name={picLiked ? "star" : "staro"}
+                    name={getReactionIconName()}
                     size={35}
                     color="black"
                 />
