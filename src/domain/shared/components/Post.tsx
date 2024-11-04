@@ -24,6 +24,7 @@ import {fetchFeed} from "@/src/domain/shared/feedService";
 import {deleteItem} from "@/src/domain/service/ApiService";
 import {useRoute} from "@react-navigation/core";
 import {addPostReaction, removeReaction} from "@/src/domain/profile/modules/profileSlice";
+import {runOnJS} from "react-native-reanimated";
 
 export default (props: {
     iReacted: boolean;
@@ -125,10 +126,7 @@ export default (props: {
 
     const doubleTap = Gesture.Tap()
         .numberOfTaps(2)
-        .onStart(() => {
-            toggleReaction()
-            console.log("Reacting soon...")
-        });
+        .onStart(() => runOnJS(toggleReaction)())
 
     const getReactionIconName = () => {
         if (route.name === 'Picture'){
