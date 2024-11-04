@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {FlatList, Text} from 'react-native';
 import {getJson, post} from '../service/ApiService';
 import {ProfileHeader} from "./ProfileHeader";
@@ -7,31 +7,39 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import {USER_NAME_SESSION_ATTRIBUTE_NAME} from "../service/AuthenticationService";
 import {User} from "@/src/domain/profile/model/User";
 import ProfilePost from "@/src/domain/profile/model/ProfilePost";
+import {useAppDispatch, useAppSelector} from "@/src/config/hooks";
+import {reset, successSearchingPosts} from "@/src/domain/profile/modules/profileSlice";
+import {useFocusEffect} from "@react-navigation/core";
 
 export default props => {
 
     const [user, setUser] = useState<User>()
     const [postsPage, setPostsPage] = useState<number>(1)
-    const [posts, setPosts] = useState<ProfilePost[]>([])
+    //const [posts, setPosts] = useState<ProfilePost[]>([])
     const [loggedUsername, setLoggedUsername] = useState<String>()
 
-    useEffect(() => {
-        const navigationUserName = props.route.params ? props.route.params.userName : undefined;
+    const {posts} = useAppSelector(store => store.profile)
+    const dispatch = useAppDispatch()
 
-        if (undefined === navigationUserName) {
-            AsyncStorage.getItem(USER_NAME_SESSION_ATTRIBUTE_NAME)
-                .then(loggedUserName => {
-                    if (loggedUserName) {
-                        getProfilePosts(loggedUserName)
-                        fillProfile(loggedUserName)
-                        setLoggedUsername(loggedUserName)
-                    }
-                })
-        } else {
-            getProfilePosts(navigationUserName)
-            fillProfile(navigationUserName)
-        }
-    }, [])
+    useFocusEffect(
+        React.useCallback(() => {
+            const navigationUserName = props.route.params ? props.route.params.userName : undefined;
+
+            if (undefined === navigationUserName) {
+                AsyncStorage.getItem(USER_NAME_SESSION_ATTRIBUTE_NAME)
+                    .then(loggedUserName => {
+                        if (loggedUserName) {
+                            getProfilePosts(loggedUserName)
+                            fillProfile(loggedUserName)
+                            setLoggedUsername(loggedUserName)
+                        }
+                    })
+            } else {
+                getProfilePosts(navigationUserName)
+                fillProfile(navigationUserName)
+            }
+        }, [])
+    )
 
     const fillProfile = (userName: string) => getJson('/profile/' + userName)//TODO change to /user/username/profile
         .then(u => {
@@ -41,20 +49,19 @@ export default props => {
             alert("Error finding " + userName + " profile: " + error)
         })
 
-    const getProfilePosts = (userName: string) => getJson(`/post/${userName}/${postsPage}`)
-        .then(json => json.postUrls.map((post: any) => new ProfilePost(post)))
-        .then(postUrls => {
-            setPosts(
-                postsPage === 1 ? postUrls : [...posts, ...postUrls]
-            )
-        })
-        .then(_ => {
-            setPostsPage(postsPage + 1)
-        })
-        .catch(error => {
-            console.log("Error searching posts: " + error) //TODO if 403 should logout :)
-            console.log(typeof error)
-        })
+    const getProfilePosts = (userName: string) => {
+        dispatch(reset())
+        getJson(`/post/${userName}/${postsPage}`)
+            .then(json => json.postUrls.map((post: any) => new ProfilePost(post)))
+            .then(postUrls => {
+                dispatch(successSearchingPosts(postUrls, postsPage))
+            })
+            .then(_ => setPostsPage(postsPage + 1))
+            .catch(error => {
+                console.log("Error searching posts: " + error) //TODO if 403 should logout :)
+                console.log(typeof error)
+            })
+    }
 
     const sendAdmireRequest = (userName: string) => post('/admire-request/' + userName)
         .then(resp => {
@@ -69,7 +76,7 @@ export default props => {
     const deletePost = (postId: string) => {
         props.navigation.navigate("Profile")
         const newPosts = posts.filter(post => post.id !== postId)
-        setPosts(newPosts)
+        dispatch(successSearchingPosts(newPosts, 1))
     }
 
     return (
