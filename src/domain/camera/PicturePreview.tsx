@@ -7,7 +7,7 @@ import mime from "mime";
 import CountDown from "./CountDown";
 import {useAppDispatch} from "../../config/hooks";
 import {errorSearchingFeed, reset, searchingFeed, successSearchingFeed} from "../home/modules/feedSlice";
-import {fetchFeed} from "@/src/domain/home/modules/feedService";
+import {fetchFeed} from "@/src/domain/shared/feedService";
 
 export default props => {
 

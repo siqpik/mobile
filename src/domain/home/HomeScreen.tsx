@@ -6,7 +6,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import {USER_NAME_SESSION_ATTRIBUTE_NAME} from "../service/AuthenticationService";
 import {errorSearchingFeed, reset, searchingFeed, successSearchingFeed} from "./modules/feedSlice";
 import {useAppDispatch, useAppSelector} from "../../config/hooks";
-import {fetchFeed} from "@/src/domain/home/modules/feedService";
+import {fetchFeed} from "@/src/domain/shared/feedService";
 
 export default props => {
 
