@@ -10,7 +10,7 @@ export default props => (
                           style={styles.capture}>
             <IonIcon
                 name="camera-reverse"
-                color="white"
+                color="black"
                 size={45}
             />
         </TouchableOpacity>
@@ -18,15 +18,15 @@ export default props => (
                           style={styles.capture}>
             <Icon
                 name="circle-thin"
-                size={50}
-                color="white"
+                size={55}
+                color="black"
             />
         </TouchableOpacity>
         <TouchableOpacity onPress={() => props.toggleFlash()}
                           style={styles.capture}>
             <IonIcon
                 name={props.flash ? "flash-outline" : "flash-off-outline"}
-                color="white"
+                color="black"
                 size={45}
             />
         </TouchableOpacity>
