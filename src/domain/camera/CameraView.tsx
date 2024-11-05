@@ -4,6 +4,7 @@ import {StyleSheet, Text, View} from 'react-native';
 import {Camera, useCameraDevice} from 'react-native-vision-camera';
 import {useIsFocused, useNavigation} from "@react-navigation/native"
 import CameraButtons from "./CameraButtons";
+import styles from '../shared/styles/styles';
 
 export default () => {
 
@@ -45,12 +46,17 @@ export default () => {
 
     return device
         ? (
-            <View style={{flex: 1}}>
+            <View style={{
+                flex: 1,
+                flexDirection: 'column',
+                width: '100%',
+                marginTop: '21%'
+            }}>
                 {hasPermission && (
                     <>
                         <Camera
                             ref={camera}
-                            style={StyleSheet.absoluteFill}
+                            style={styles.cameraView}
                             device={device}
                             isActive={isFocused}
                             photo={true}

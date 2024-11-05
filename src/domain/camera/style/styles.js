@@ -29,7 +29,7 @@ export const styles = StyleSheet.create({
         alignItems: 'flex-end',
         width: "100%",
         justifyContent: "space-around",
-        marginBottom: "5%"
+        marginTop: "-399%"
     },
     alertContainer: {
         flex: 1,

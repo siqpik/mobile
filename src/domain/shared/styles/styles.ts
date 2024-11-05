@@ -16,6 +16,14 @@ export default StyleSheet.create({
         alignSelf: 'center',
         paddingBottom: 5
     },
+    cameraView: {
+        resizeMode: 'cover',
+        height: Dimensions.get('screen').height / 1.5,
+        width: Dimensions.get('screen').width,
+        flexDirection: 'column',
+        alignSelf: 'center',
+        paddingTop: 55
+    },
     container: {
         flex: 1,
         flexDirection: 'column',
