@@ -1,11 +1,11 @@
-import {Dimensions, StyleSheet} from "react-native";
+import {StyleSheet} from "react-native";
 
 export const styles = StyleSheet.create({
     container: {
         flex: 1,
         flexDirection: 'column',
     },
-    container__header:{
+    container__header: {
         flex: 0,
         flexDirection: 'row',
         alignItems: 'center',
@@ -15,21 +15,21 @@ export const styles = StyleSheet.create({
         flex: 2,
         resizeMode: 'cover',
     },
-    commentContainer:{
+    commentContainer: {
         flex: 1,
         marginTop: '2%'
     },
     comments: {
         flex: 1,
-        alignItems:'flex-end',
+        alignItems: 'flex-end',
         flexDirection: 'row',
         borderBottomWidth: .5,
         width: '95%',
         alignSelf: 'center',
-        justifyContent:'flex-start',
+        justifyContent: 'flex-start',
         paddingTop: '2%'
     },
-    comment:{
+    comment: {
         flex: 2,
         flexWrap: 'wrap',
         fontSize: 18,
@@ -55,22 +55,22 @@ export const styles = StyleSheet.create({
         paddingTop: '2%',
         paddingBottom: '2%'
     },
-    titleContainer:{
-        flex: 0, 
+    titleContainer: {
+        flex: 0,
         flexDirection: 'row',
         justifyContent: 'space-around',
         marginBottom: '1%'
-        
+
     },
-    buttonContainer:{
+    buttonContainer: {
         flex: 0,
         flexDirection: 'row',
         alignItems: 'flex-end',
         justifyContent: 'flex-end'
     },
     delete_button: {
-        flex:0,
-        alignSelf:'flex-end',
+        flex: 0,
+        alignSelf: 'flex-end',
         borderWidth: 1,
         padding: '1.5%',
         borderTopLeftRadius: 15,
