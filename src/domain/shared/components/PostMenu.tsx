@@ -8,7 +8,6 @@ export default (props: { deletePost: () => void; }) =>
         style={{position: "absolute", top: 20, right: 20}}
         title="Menu Title"
         onPressAction={({nativeEvent}) => {
-            console.warn(JSON.stringify(nativeEvent));
             if (nativeEvent.event === 'delete') {
                 props.deletePost();
             }
