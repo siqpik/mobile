@@ -1,5 +1,5 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {Text, View} from 'react-native';
 
 import {Camera, useCameraDevice} from 'react-native-vision-camera';
 import {useIsFocused, useNavigation} from "@react-navigation/native"
