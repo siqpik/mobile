@@ -1,6 +1,6 @@
 import {ImageBackground, Text, TouchableOpacity, View} from 'react-native';
 import React, {useState} from 'react';
-import {styles} from "./style/styles";
+import styles from "./../shared/styles/styles";
 import {useNavigation} from '@react-navigation/native';
 import {uploadMedia} from "../service/ApiService";
 import mime from "mime";
@@ -55,41 +55,42 @@ export default props => {
 
     return (
         <View style={styles.preview}>
-            <View style={styles.container}>
-                <ImageBackground source={{
-                    uri: isPosting
-                        ? 'https://www.stripersonline.com/surftalk/uploads/monthly_2021_02/loading.gif.89b2096f8e6af0dc8cac58c5683938dd.gif'
-                        : `file://${props.route.params.state.image.path}`
-                }}
-                                 style={{flex: 1}}>
-                    {!isPosting && <View style={styles.countdown}>
-                        <CountDown
-                            until={60 * 3}
-                            size={40}
-                            onFinish={() => navigation.navigate('Siqpik')}
-                            digitStyle={{borderWidth: 0, borderColor: '#000',}}
-                            digitTxtStyle={{color: '#fff'}}
-                            separatorStyle={{color: '#fff'}}
-                            timeToShow={['M', 'S']}
-                            timeLabels={{m: null, s: null}}
-                            showSeparator
-                        />
-                        <View style={styles.previewButtonsContainer}>
-                            <TouchableOpacity style={styles.previewButtons} onPress={() => {
-                                postMedia(imageUri)
-                            }}>
-                                <Text style={styles.buttonText}>Post!</Text>
-                            </TouchableOpacity>
+            {!isPosting &&
+                <CountDown
+                    until={60 * 3}
+                    size={40}
+                    onFinish={() => navigation.navigate('Siqpik')}
+                    digitStyle={{borderWidth: 0, borderColor: '#000',}}
+                    digitTxtStyle={{color: '#000'}}
+                    separatorStyle={{color: '#000'}}
+                    timeToShow={['M', 'S']}
+                    timeLabels={{m: null, s: null}}
+                    showSeparator
+                />
+            }
+            <ImageBackground source={{
+                uri: isPosting
+                    ? 'https://www.stripersonline.com/surftalk/uploads/monthly_2021_02/loading.gif.89b2096f8e6af0dc8cac58c5683938dd.gif'
+                    : `file://${props.route.params.state.image.path}`
+            }}
+                             style={styles.picPreview}
+            >
+            </ImageBackground>
+            {!isPosting &&
+                <View style={styles.previewButtonsContainer}>
+                    <TouchableOpacity style={styles.previewButtons} onPress={() => {
+                        postMedia(imageUri)
+                    }}>
+                        <Text style={styles.buttonText}>Post!</Text>
+                    </TouchableOpacity>
 
-                            <TouchableOpacity style={styles.previewButtons} title={'Discard'} onPress={() => {
-                                props.navigation.navigate('Siqpik')
-                            }}>
-                                <Text style={styles.buttonText}>Discard</Text>
-                            </TouchableOpacity>
-                        </View>
-                    </View>}
-                </ImageBackground>
-            </View>
+                    <TouchableOpacity style={styles.previewButtons} title={'Discard'} onPress={() => {
+                        props.navigation.navigate('Siqpik')
+                    }}>
+                        <Text style={styles.buttonText}>Discard</Text>
+                    </TouchableOpacity>
+                </View>
+            }
         </View>
     )
 }
