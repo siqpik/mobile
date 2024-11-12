@@ -32,7 +32,7 @@ export default props => {
         <KeyboardAvoidingScrollView containerStyle={styles.container}>
             <Logo/>
             <View style={styles.formContainer}>
-                <Text style={styles.signupText}> Enter your new Password: {pass } {confirmedPass}</Text>
+                <Text style={styles.signupText}> Enter your new Password:</Text>
 
                 <TextInput style={styles.inputBox}
                            placeholder='New password'
