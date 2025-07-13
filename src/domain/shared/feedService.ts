@@ -1,5 +1,5 @@
 import {getJson} from "@/src/domain/service/ApiService";
-import Post from "@/src/domain/home/model/Post";
+import Post from "@/src/domain/feed/model/Post";
 
 export const fetchFeed = (page: number, onSearching: (() => void), onSuccess: ((arg0: any) => any), onError: (() => void)) => {
     onSearching()

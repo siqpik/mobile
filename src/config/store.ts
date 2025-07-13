@@ -1,4 +1,4 @@
-import feedReducer from "../domain/home/modules/feedSlice"
+import feedReducer from "@/src/domain/feed/modules/feedSlice"
 import profileReducer from "../domain/profile/modules/profileSlice"
 import {configureStore} from "@reduxjs/toolkit"
 import profileSlice from "@/src/domain/profile/modules/profileSlice";

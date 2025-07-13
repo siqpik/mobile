@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {styles} from "../../home/style/styles";
+import {styles} from "@/src/domain/feed/style/styles";
 import {Text, TouchableOpacity, View} from "react-native";
 import Icon from 'react-native-vector-icons/AntDesign';
 import FastImage from "react-native-fast-image";
@@ -16,7 +16,7 @@ import {
     successSearchingFeed,
     successUnReactingPost,
     unReactingToPost
-} from "@/src/domain/home/modules/feedSlice"
+} from "@/src/domain/feed/modules/feedSlice"
 import {useNavigation} from "@react-navigation/native"
 import {Gesture, GestureDetector} from "react-native-gesture-handler";
 import PostMenu from "@/src/domain/shared/components/PostMenu";

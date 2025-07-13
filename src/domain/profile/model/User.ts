@@ -1,4 +1,4 @@
-import PostUserInfo from "@/src/domain/home/model/PostUserInfo";
+import PostUserInfo from "@/src/domain/feed/model/PostUserInfo";
 
 export class User {
     isLoggedUser: boolean

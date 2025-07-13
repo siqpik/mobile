@@ -5,7 +5,7 @@ import RootNavigator from './src/domain/navigation/RootNavigator';
 import LoadingApp from './src/domain/navigation/LoadingApp';
 import Picture from "./src/domain/profile/pictureview/Picture";
 import Preview from "./src/domain/camera/PicturePreview";
-import CommentsPage from './src/domain/home/components/Comments';
+import CommentsPage from '@/src/domain/feed/components/Comments';
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import LoginScreen from "./src/domain/authentication/login/LoginScreen";
 import SignupScreen from "./src/domain/authentication/signup/Signup";

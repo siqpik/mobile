@@ -1,5 +1,5 @@
 import {View} from "react-native";
-import {styles} from "@/src/domain/home/style/styles";
+import {styles} from "@/src/domain/feed/style/styles";
 import React from "react";
 
 export default () =>
