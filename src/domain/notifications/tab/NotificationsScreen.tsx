@@ -40,10 +40,8 @@ export default () => {
                 })
             )
 
-            const rret: Notification[] = mapped
-                .map(p => p.value)
+            return mapped.map(p => p.value)
 
-            return rret
         } catch (error) {
             console.error("Error fetching admire requests:", error);
         }
