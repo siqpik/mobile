@@ -32,8 +32,8 @@ export const uploadMedia = (media: any) =>
 export const deleteItem = (url: string, body?: undefined, contentType?: undefined) => authenticatedRequest(url,
     'DELETE', body, contentType);
 
-export const getJson = (url: string) => authenticatedRequest(url, 'GET')
-    .then(response => response.json());
+export const getJson: (url: string) => Promise<any> = async (url: string) => authenticatedRequest(url, 'GET')
+    .then(response => response.json())
 
 export const authenticatedRequest = (url: string, method: string, body?: any,
                                      contentType?: string) => AsyncStorage.getItem(TOKEN_SESSION)
@@ -72,8 +72,7 @@ const genericFetch = async (url: string, method: string, headers: any, body: any
 
 function handleErrors(response: any) {
     if (!response.ok) {
-        console.log("Something went wrong fetching: " + JSON.stringify(response))
-        if (403 === response.status) {
+        if (401 === response.status || 403 === response.status) {
             console.log("Unauthorised: Logging out...")
             logout()
             return;

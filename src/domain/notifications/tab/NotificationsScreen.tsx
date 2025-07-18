@@ -21,20 +21,31 @@ export default () => {
     }, [notifications]);
 
     const getAllNotifications = async () => {
-        const notifs = await getJson('/notification')
-        return await Promise.all(
-            notifs.map(async n => await getAdmireRequests(n))
-        ).then(admireRequestsNotifications => admireRequestsNotifications
-            .filter(n => n !== null)
-            .filter(n => n.admireRequestStatus !== AdmireRequestStatus.DISMISSED)
-        )
+        const notifications = await getJson('/notification')
+        const filtered = notifications.filter(n => null !== n)
+
+        const admireRequests: Notification[] = await getAdmireRequests(filtered)
+
+        return admireRequests
+            .filter(ar => ar !== null && ar !== undefined)
+            .filter(ar => ar.admireRequestStatus !== AdmireRequestStatus.DISMISSED)
     }
 
-    const getAdmireRequests = notification => getJson(`/admire-request/${notification.eventId}`)
-        .then(admireRequest => null !== admireRequest
-            ? new Notification(notification, admireRequest)
-            : null
-        )
+    const getAdmireRequests = async (notifications: any[]) => {
+        try {
+            const mapped = await Promise.allSettled(
+                notifications.map(async (notification) => {
+                    const admireRequest = await getJson(`/admire-request/${notification.eventId}`)
+                    return admireRequest !== null ? new Notification(notification, admireRequest) : null
+                })
+            )
+
+            return mapped.map(p => p.value)
+
+        } catch (error) {
+            console.error("Error fetching admire requests:", error);
+        }
+    }
 
     const clearNewNotifications = () => notifications
         .filter((notification: Notification) => NotificationStatus.NEW === notification.notificationStatus)

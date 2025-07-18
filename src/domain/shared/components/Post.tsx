@@ -3,7 +3,7 @@ import {styles} from "../../home/style/styles";
 import {Text, TouchableOpacity, View} from "react-native";
 import Icon from 'react-native-vector-icons/AntDesign';
 import FastImage from "react-native-fast-image";
-import {useAppDispatch} from "@/src/config/hooks";
+import {useAppDispatch, useAppSelector} from "@/src/config/hooks";
 import {togglePostReactionOnFeed} from "@/src/domain/shared/utils/functions";
 import {
     errorLikingPost,
@@ -25,6 +25,7 @@ import {deleteItem} from "@/src/domain/service/ApiService";
 import {useRoute} from "@react-navigation/core";
 import {addPostReaction, removeReaction} from "@/src/domain/profile/modules/profileSlice";
 import {runOnJS} from "react-native-reanimated";
+import {REQUEST} from "@/src/domain/service/model/Request";
 
 export default (props: {
     iReacted: boolean;
@@ -46,6 +47,8 @@ export default (props: {
     const [iReacted, setIReacted] = useState<boolean>(props.iReacted)
     const [reactionCount, setReactionCount] = useState<number>(props.likesCount);
     const route = useRoute()
+    const {request} = useAppSelector(store => store.feed)
+
 
     //const [comment, setComment] = useState();
 
@@ -88,16 +91,6 @@ export default (props: {
     }
 
     const toggleReaction = () => {
-        if ('Picture' === route.name) {
-            if (iReacted){
-                setReactionCount(reactionCount - 1)
-                dispatch(removeReaction(props.postId))
-            } else {
-                dispatch(addPostReaction(props.postId))
-                setReactionCount(reactionCount + 1)
-            }
-        }
-
         togglePostReactionOnFeed(
             props.postId,
             props.iReacted,
@@ -108,6 +101,16 @@ export default (props: {
             (postId) => dispatch(successLikingPost(postId)),
             () => dispatch(errorLikingPost())
         )
+
+        if ('Picture' === route.name) {
+            if (iReacted) {
+                setReactionCount(reactionCount - 1)
+                dispatch(removeReaction(props.postId))
+            } else {
+                dispatch(addPostReaction(props.postId))
+                setReactionCount(reactionCount + 1)
+            }
+        }
 
         setIReacted(!iReacted)
     }
@@ -129,24 +132,24 @@ export default (props: {
         .onStart(() => runOnJS(toggleReaction)())
 
     const getReactionIconName = () => {
-        if (route.name === 'Picture'){
+        if (route.name === 'Picture') {
             return iReacted ? 'star' : 'staro'
         }
 
         return props.iReacted ? 'star' : 'staro'
     }
 
-    const getReactionsCount=()=>{
-        if (route.name === 'Picture'){
+    const getReactionsText = () => {
+        const count = getReactionsCount()
+        return `${count} reaction${count === 1 ? '' : 's'}`
+    }
+
+    const getReactionsCount = () => {
+        if (route.name === 'Picture') {
             return reactionCount
         }
 
         return props.likesCount
-    }
-
-    const getReactionsText = ()=>{
-        const count = getReactionsCount()
-        return `${count} reaction${count === 1 ? '' : 's'}`
     }
 
     return (
@@ -190,6 +193,7 @@ export default (props: {
                 {/*<Text style={styles.firstComment}> {props.commentsCount} comments </Text>*/}
 
                 <Icon
+                    disabled={REQUEST.PENDING === request}
                     onPress={() => toggleReaction()}
                     name={getReactionIconName()}
                     size={35}
