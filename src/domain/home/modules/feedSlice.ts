@@ -42,11 +42,11 @@ const feedSlice = createSlice({
         },
         successLikingPost(state, postId) {
             state.request = REQUEST.SUCCESS
-            state.posts = state.posts.map(post => {
-                return post.id === postId.payload
+            state.posts = state.posts.map(post =>
+                post.id === postId.payload
                     ? {...post, likesCount: post.likesCount + 1, iReacted: !post.iReacted}
                     : post
-            })
+            )
         },
         unReactingToPost(state) {
             state.request = REQUEST.PENDING

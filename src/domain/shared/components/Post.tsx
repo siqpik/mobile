@@ -58,7 +58,6 @@ export default (props: {
 
     const goToProfile = () => {
         if (props.loggedUsername !== props.username) {
-
             if (props.username !== 'Siqpik') {
                 navigation.navigate('ProfileOther', {
                     userName: props.username
@@ -140,17 +139,17 @@ export default (props: {
         return props.iReacted ? 'star' : 'staro'
     }
 
+    const getReactionsText = () => {
+        const count = getReactionsCount()
+        return `${count} reaction${count === 1 ? '' : 's'}`
+    }
+
     const getReactionsCount = () => {
         if (route.name === 'Picture') {
             return reactionCount
         }
 
         return props.likesCount
-    }
-
-    const getReactionsText = () => {
-        const count = getReactionsCount()
-        return `${count} reaction${count === 1 ? '' : 's'}`
     }
 
     return (
