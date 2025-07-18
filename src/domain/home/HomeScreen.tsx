@@ -3,15 +3,17 @@ import {RefreshControl} from 'react-native';
 import WallPost from '../shared/components/Post';
 import {KeyboardAvoidingScrollView} from 'react-native-keyboard-avoiding-scroll-view';
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import {USER_NAME_SESSION_ATTRIBUTE_NAME} from "../service/AuthenticationService";
+import {logout, USER_NAME_SESSION_ATTRIBUTE_NAME} from "../service/AuthenticationService";
 import {errorSearchingFeed, reset, searchingFeed, successSearchingFeed} from "./modules/feedSlice";
 import {useAppDispatch, useAppSelector} from "../../config/hooks";
 import {fetchFeed} from "@/src/domain/shared/feedService";
+import {useNavigation} from "@react-navigation/native";
 
 export default props => {
 
     const {posts, page} = useAppSelector(store => store.feed)
     const dispatch = useAppDispatch()
+    const navigation = useNavigation()
 
     const [loggedUsername, setLoggedUsername] = useState<string>("");
     const [refreshing, setRefreshing] = useState(false);
@@ -26,7 +28,12 @@ export default props => {
     const getFeed = () => fetchFeed(
         page, () => dispatch(searchingFeed()),
         (payload) => dispatch(successSearchingFeed(payload)),
-        () => dispatch(errorSearchingFeed())
+        () => {
+            logout()
+            navigation.navigate("Login")
+
+            dispatch(errorSearchingFeed())
+        }
     )
 
     const onRefresh = React.useCallback(() => {

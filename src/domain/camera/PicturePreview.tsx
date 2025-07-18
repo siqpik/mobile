@@ -8,6 +8,7 @@ import CountDown from "./CountDown";
 import {useAppDispatch} from "../../config/hooks";
 import {errorSearchingFeed, reset, searchingFeed, successSearchingFeed} from "../home/modules/feedSlice";
 import {fetchFeed} from "@/src/domain/shared/feedService";
+import {logout} from "@/src/domain/service/AuthenticationService";
 
 export default props => {
 
@@ -39,7 +40,10 @@ export default props => {
         1,
         () => dispatch(searchingFeed()),
         payload => dispatch(successSearchingFeed(payload)),
-        () => dispatch(errorSearchingFeed())
+        () => {
+            dispatch(errorSearchingFeed())
+            logout()
+        }
     )
 
     function getFormData() {
