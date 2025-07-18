@@ -41,7 +41,6 @@ export default () => {
             )
 
             return mapped.map(p => p.value)
-
         } catch (error) {
             console.error("Error fetching admire requests:", error);
         }
