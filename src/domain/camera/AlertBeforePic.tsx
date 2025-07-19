@@ -15,11 +15,12 @@ export default () => {
 
     const updateAttempts = () => {
         getJson('/attempt')
-            .then(json => {
-                setAttempts(json.attempts);
+            .then(attemptsCount => {
+                setAttempts(attemptsCount);
             })
             .catch(error => alert('An error has occurred getting attempts: ' + error))
     }
+
     const addAttempt = () => {
         post('/attempt', null, 'application/json')
             .then(() => {
