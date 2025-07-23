@@ -20,6 +20,9 @@
       }
     },
     "production": {
+      "env": {
+        "ANDROID_SDK_ROOT": "/Users/ronn/Library/Android/sdk"
+      },
       "ios": {
         "resourceClass": "m1-medium"
       }
