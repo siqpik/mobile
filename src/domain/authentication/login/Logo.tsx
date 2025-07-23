@@ -1,7 +1,7 @@
 import React from 'react';
 import {Text, View} from 'react-native';
 import {styles} from '../style/styles';
-import FastImage from "react-native-fast-image";
+import FastImage from "@d11/react-native-fast-image"
 
 
 export default () =>

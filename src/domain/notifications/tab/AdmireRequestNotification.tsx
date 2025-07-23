@@ -3,7 +3,7 @@ import {Text, TouchableOpacity, View} from "react-native";
 import {styles} from "./style/styles";
 import {shortenName} from '../../shared/utils/functions';
 import {AdmireRequestStatus} from "./model/Notification";
-import FastImage from "react-native-fast-image";
+import FastImage from "@d11/react-native-fast-image";;
 
 
 export const AdmireRequestNotification = props =>
