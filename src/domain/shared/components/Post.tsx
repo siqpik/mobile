@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {styles} from "../../home/style/styles";
 import {Text, TouchableOpacity, View} from "react-native";
 import Icon from 'react-native-vector-icons/AntDesign';
-import FastImage from "react-native-fast-image";
+import FastImage from "@d11/react-native-fast-image";;
 import {useAppDispatch, useAppSelector} from "@/src/config/hooks";
 import {togglePostReactionOnFeed} from "@/src/domain/shared/utils/functions";
 import {

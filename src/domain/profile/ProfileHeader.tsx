@@ -2,7 +2,7 @@ import React from 'react'
 import {GestureResponderEvent, Text, TouchableOpacity, View} from 'react-native';
 import {styles} from "./style/styles";
 import Icon from 'react-native-vector-icons/FontAwesome';
-import FastImage from "react-native-fast-image";
+import FastImage from "@d11/react-native-fast-image";;
 
 export const ProfileHeader = (props: { isLoggedUser: boolean; navigation: { openDrawer: () => void; }; displayName: string; username: string; profilePicUrl: string; admirersCount: number; amIAdmirer: boolean; hasPendingRequest: boolean; sendAdmireRequest: { (event: GestureResponderEvent): void; (event: GestureResponderEvent): void; }; admiredCount: number; }) =>
     <View>
