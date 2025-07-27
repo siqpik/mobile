@@ -32,7 +32,10 @@ export default props => {
 
                 setIsPosting(false)
             })
-            .catch(error => console.log("Something went wrong posting: " + error))
+            .catch(error => {
+                console.log("Something went wrong posting: " + error)
+                setIsPosting(false)
+            })
             .then(() => navigation.navigate("Siqpik"))
     }
 

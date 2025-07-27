@@ -37,6 +37,13 @@
     },
     "plugins": [
       [
+        "@evennit/notifee-expo-plugin",
+        {
+          "iosDeploymentTarget": "15.1",
+          "apsEnvMode": "development"
+        }
+      ],
+      [
         "expo-build-properties",
         {
           "android": {
