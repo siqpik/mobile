@@ -1,18 +1,18 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import {TOKEN_SESSION} from "../shared/Consts";
-import {logout} from './AuthenticationService'
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import {TOKEN_SESSION} from "../shared/Consts"
+import {logout} from "@/src/domain/service/Common"
 
-//const API_URL = 'http://localhost:8080';
-const API_URL = 'https://siqpik.up.railway.app';
+//const API_URL = 'http://localhost:8080'
+const API_URL = 'https://siqpik.up.railway.app'
 
 export const post = (url: string, body?: any, contentType?: any) => {
     return authenticatedRequest(url,
-        'POST', body, contentType);
+        'POST', body, contentType)
 }
 
 export const patch = (url: string, body: any, contentType: any) => {
     return authenticatedRequest(url,
-        'PATCH', body, contentType);
+        'PATCH', body, contentType)
 }
 
 export const uploadMedia = (media: any) =>
@@ -30,7 +30,7 @@ export const uploadMedia = (media: any) =>
     })
 
 export const deleteItem = (url: string, body?: undefined, contentType?: undefined) => authenticatedRequest(url,
-    'DELETE', body, contentType);
+    'DELETE', body, contentType)
 
 export const getJson: (url: string) => Promise<any> = async (url: string) => authenticatedRequest(url, 'GET')
     .then(response => response.json())
@@ -66,8 +66,8 @@ const genericFetch = async (url: string, method: string, headers: any, body: any
         method: method,
         headers: headers,
         body: body
-    });
-    return handleErrors(response);
+    })
+    return handleErrors(response)
 }
 
 function handleErrors(response: any) {
@@ -75,10 +75,10 @@ function handleErrors(response: any) {
         if (401 === response.status || 403 === response.status) {
             console.log("Unauthorised: Logging out...")
             logout()
-            return;
+            return
         }
 
-        throw Error(response.status);
+        throw Error(response.status)
     }
-    return response;
+    return response
 }
